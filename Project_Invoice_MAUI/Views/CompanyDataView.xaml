@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Project_Invoice_MAUI.Views.CompanyDataView"
+             Title="CompanyDataView">
+    <StackLayout BackgroundColor="#272537">
+        
+        <Label Text="Ulica" 
+               TextColor="White"
+               Margin="10,5,0,0"/>
+        <Entry x:Name="Ulica"
+               Text="{Binding Street}"
+               MaximumWidthRequest="260"
+               MinimumWidthRequest="160"
+               HorizontalOptions="Start"
+               Margin="10,5,0,0"
+               Background="White"/>
+
+        <Label Text="Numer Lokalu" 
+               TextColor="White"
+               Margin="10,5,0,0"/>
+
+        <Entry x:Name="Numer_lokalu"
+               MaximumWidthRequest="260"
+               MinimumWidthRequest="160"
+               HorizontalOptions="Start"
+               Margin="10,5,0,0"
+               Background="White"
+               Text="{Binding House_Number}"/>
+
+        <Label Text="Miasto" 
+               TextColor="White"
+               Margin="10,5,0,0"
+               />
+        <Entry x:Name="Apartment_Number"
+               MaximumWidthRequest="260"
+               MinimumWidthRequest="160"
+               HorizontalOptions="Start"
+               Margin="10,5,0,0"
+               Background="White"
+               Text="{Binding Town}" />
+
+        <Label Text="Kod Pocztowy" 
+               TextColor="White"
+               Margin="10,5,0,0"
+               />
+        
+        <Entry x:Name="ZIP_Code"
+               MaximumWidthRequest="260"
+               MinimumWidthRequest="160"
+               HorizontalOptions="Start"
+               Margin="10,5,0,0"
+               Background="White"
+               Text="{Binding ZIP_Code}" />
+
+    </StackLayout>
+</ContentPage>

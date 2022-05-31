@@ -73,6 +73,9 @@
 	  <MauiXaml Update="Views\CompanyDataView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\HomeView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\InvoiceViewSell.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

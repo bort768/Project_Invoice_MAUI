@@ -1,6 +1,7 @@
 ﻿using Project_Invoice_MAUI.Models;
 using Project_Invoice_MAUI.Singleton;
 
+
 namespace Project_Invoice_MAUI.ViewModels
 {
 
@@ -13,8 +14,20 @@ namespace Project_Invoice_MAUI.ViewModels
 
         Firma firma = Firma.GetInstance();
 
-        public bool Broken_By_Mounth { get; set; }
-        public bool Broken_By_Year { get; set; }
+        [ObservableProperty]
+        private bool _broken_By_Mounth;
+        partial void OnBroken_By_MounthChanged(bool value)
+        {
+            Invoice_Format_By_Mounth();
+        }
+
+        [ObservableProperty]
+        private bool _broken_By_Year;
+        partial void OnBroken_By_YearChanged(bool value)
+        {
+            Invoice_Format_By_Year();
+        }
+
 
         [ObservableProperty]
         private string _invoice_format;
@@ -91,10 +104,34 @@ namespace Project_Invoice_MAUI.ViewModels
 
         }
 
-        #region Commands    
-
+        #region Commands
+        
         [ICommand]
-        public void Invoice_Format_By_Year_Command()
+        // TODO: dodaj sprawdzanie do nipu
+        public async void SubmitCompanyData()
+        {
+            if (ValidateNip(NIP))
+            {
+                firma.CompanyData = new CompanyData(Full_Name, NIP, REGON, Street, House_Number, ZIP_Code, Town);
+                //MessageBox.Show("Dane zapisane", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+                
+                 OK_Message_IS_Visble = await ChangeVisibleOK();
+
+            }
+            else
+            {
+                Error_Message_IS_Visble = await ChangeVisibleError();
+                //MessageBox.Show("NIP nie prawidłowy", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+
+
+        #endregion
+
+        #region Methods
+        public void Invoice_Format_By_Year()
         {
             if (firma.DocumentNumbering == null)
             {
@@ -114,25 +151,7 @@ namespace Project_Invoice_MAUI.ViewModels
             Wypisanie_Invoice_Format();
         }
 
-        [ICommand]
-        // TODO: dodaj sprawdzanie do nipu
-        public void SubmitCompanyDataCommand()
-        {
-            if (ValidateNip(NIP))
-            {
-                firma.CompanyData = new CompanyData(Full_Name, NIP, REGON, Street, House_Number, ZIP_Code, Town);
-                //MessageBox.Show("Dane zapisane", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                //MessageBox.Show("NIP nie prawidłowy", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-
-
-        [ICommand]
-        public void Invoice_Format_By_Mounth_Command()
+        public void Invoice_Format_By_Mounth()
         {
             if (firma.DocumentNumbering == null)
             {
@@ -151,9 +170,7 @@ namespace Project_Invoice_MAUI.ViewModels
 
             Wypisanie_Invoice_Format();
         }
-        #endregion
 
-        #region Methods
         private void Wypisanie_Invoice_Format()
         {
             if (Broken_By_Year && Broken_By_Mounth)

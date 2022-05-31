@@ -41,7 +41,7 @@ namespace Project_Invoice_MAUI.ViewModels
 
 
         [ICommand]
-        public void SubmitButtonCommand()
+        public void SubmitBossDataButton()
         {
             BossData bossData = new BossData(Name, Last_Name, ID, Password); // po co?
                                                                              //MessageBox.Show("Dane zapisane", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);

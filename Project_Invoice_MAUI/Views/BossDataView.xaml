@@ -2,10 +2,118 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Project_Invoice_MAUI.Views.BossDataView"
-             Title="BossDataView">
-    <StackLayout>
-        <Label Text="Welcome to .NET MAUI!"
-                VerticalOptions="Center" 
-                HorizontalOptions="Center" />
-    </StackLayout>
+             xmlns:viewmodel="clr-namespace:Project_Invoice_MAUI.ViewModels"
+             x:DataType="viewmodel:BossDataViewModel"
+             Title="Dane szefa">
+
+    <ContentPage.BindingContext>
+        <viewmodel:BossDataViewModel/>
+    </ContentPage.BindingContext>
+    <Grid BackgroundColor="#272537"
+          RowDefinitions="*,auto">
+        <ScrollView Grid.Row="0">
+            <Frame BorderColor="Transparent"
+                   Margin="10"
+                   MaximumHeightRequest="300">
+                <Frame.Background>
+                    <LinearGradientBrush EndPoint="1,1">
+                        <GradientStop Color="#FFBD8641"
+                                  Offset="0.0"/>
+                        <GradientStop Color="#FFB76D11"
+                                  Offset="1.1"/>
+                    </LinearGradientBrush>
+                </Frame.Background>
+            
+                <VerticalStackLayout>
+                    <Label Text="Imie" 
+                       TextColor="White"
+                       Margin="10,5,0,0"/>
+
+                    <Editor Text="{Binding Name}"
+                            MaximumWidthRequest="400"
+                            MinimumWidthRequest="160"
+                            MinimumHeightRequest="20"
+                            MaximumHeightRequest="50"
+                            HorizontalOptions="Start"
+                            Margin="10,5,0,0"
+                            HorizontalTextAlignment="Center"
+                            Placeholder="Tu wpisz imię"
+                            Background="white"
+                            />
+
+                    <Label Text="Nazwisko" 
+                       TextColor="White"
+                       Margin="10,5,0,0"/>
+
+
+                    <Editor Text="{Binding Last_Name}"
+                        MaximumWidthRequest="400"
+                        MinimumWidthRequest="160"
+                        MinimumHeightRequest="20"
+                        MaximumHeightRequest="50"
+                        HorizontalOptions="Start"
+                        Margin="10,5,0,0"
+                        HorizontalTextAlignment="Center"
+                        Placeholder="Tu wpisz Nazwisko"
+                        Background="white"
+                        />
+
+                    <Label Text="ID" 
+                       TextColor="White"
+                       Margin="10,5,0,0"/>
+
+
+                <Entry Text="{Binding ID}"
+                        MaximumWidthRequest="400"
+                        MinimumWidthRequest="160"
+                        MinimumHeightRequest="20"
+                        MaximumHeightRequest="50"
+                        HorizontalOptions="Start"
+                        Margin="10,5,0,0"
+                        HorizontalTextAlignment="Center"
+                        Placeholder="ID"
+                        Background="white"
+                        />
+
+                <Label Text="Hasło" 
+                       TextColor="White"
+                       Margin="10,5,0,0"/>
+
+
+                <Entry Text="{Binding Password}"
+                        MaximumWidthRequest="400"
+                        MinimumWidthRequest="160"
+                        MinimumHeightRequest="20"
+                        MaximumHeightRequest="50"
+                        HorizontalOptions="Start"
+                        Margin="10,5,0,0"
+                        HorizontalTextAlignment="Center"
+                        Placeholder="Optional"
+                        Background="white"
+                        IsPassword="True"/>
+
+
+
+            </VerticalStackLayout>
+            
+        </Frame>
+</ScrollView>
+        <StackLayout Grid.Row="1">
+            <Button Text="Submit"
+                Command="{Binding SubmitBossDataButtonCommand}"/>
+
+            <Border IsVisible="{Binding OK_Message_IS_Visble}"
+                    Background="Green"
+                    >
+                <Label Text="Dane zostały zapisane"/>
+            </Border>
+
+            <Border IsVisible="{Binding Error_Message_IS_Visble}"
+                    Background="crimson"
+                    >
+                <Label Text="bład dane nie zostały zapisane!"/>
+            </Border>
+        </StackLayout>
+
+    </Grid>
 </ContentPage>

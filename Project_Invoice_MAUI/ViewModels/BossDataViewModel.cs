@@ -41,11 +41,20 @@ namespace Project_Invoice_MAUI.ViewModels
 
 
         [ICommand]
-        public void SubmitButtonCommand()
+        public async void SubmitBossDataButton()
         {
-            BossData bossData = new BossData(Name, Last_Name, ID, Password); // po co?
-                                                                             //MessageBox.Show("Dane zapisane", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
-            firma.BossData = bossData;
+            try
+            {
+                BossData bossData = new BossData(Name, Last_Name, ID, Password); // po co?
+                firma.BossData = bossData;
+                OK_Message_IS_Visble = await ChangeVisibleOK();
+            }
+            catch (Exception)
+            {
+
+                Error_Message_IS_Visble = await ChangeVisibleError();
+            }
+            
         }
     }
 }

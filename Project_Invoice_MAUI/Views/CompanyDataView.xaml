@@ -8,9 +8,11 @@
     <ContentPage.BindingContext>
         <viewmodel:CompanyDataViewModel/>
     </ContentPage.BindingContext>
-    <StackLayout BackgroundColor="#272537">
+    <Grid RowDefinitions="*,auto">
+    <StackLayout BackgroundColor="#272537"
+                 Grid.Row="0">
     <ScrollView>
-    <StackLayout BackgroundColor="#272537">
+    <StackLayout >
 
         <Frame BorderColor="Transparent"
                Margin="10">
@@ -189,26 +191,30 @@
 
     </StackLayout>
     </ScrollView>
-        <Button Text="Submit"
-            Command="{Binding SubmitCompanyDataCommand}"/>
-    
-        <Border IsVisible="{Binding OK_Message_IS_Visble}"
-                Background="Green"
-                >
-            <Label Text="Dane zostały zapisane"/>
-        </Border>
+            <StackLayout Grid.Row="1">
+                <HorizontalStackLayout>
+                    <Button Text="Submit"
+                     Command="{Binding SubmitCompanyDataCommand}"/>
+                    <Button Text="Dane szefa"
+                     Command="{Binding  GoToNextPageCommand}"/>
+                </HorizontalStackLayout>
 
-        <Button Text="Submit"
-            Command="{Binding SubmitCompanyDataCommand}"/>
+                <Border IsVisible="{Binding OK_Message_IS_Visble}"
+                         Background="Green"
+                         >
+                     <Label Text="Dane zostały zapisane"/>
+                 </Border>
 
-        <Border IsVisible="{Binding Error_Message_IS_Visble}"
-                Background="crimson"
-                >
-            <Label Text="bład dane nie zostały zapisane!"/>
-        </Border>
+                 <Border IsVisible="{Binding Error_Message_IS_Visble}"
+                         Background="crimson"
+                         >
+                     <Label Text="bład dane nie zostały zapisane!"/>
+                 </Border>
+            </StackLayout>
 
 
 
-    </StackLayout>
+        </StackLayout>
+    </Grid>
 
 </ContentPage>

@@ -1,5 +1,6 @@
 ﻿using Project_Invoice_MAUI.Models;
 using Project_Invoice_MAUI.Singleton;
+using Project_Invoice_MAUI.Views;
 
 namespace Project_Invoice_MAUI.ViewModels
 {
@@ -41,7 +42,7 @@ namespace Project_Invoice_MAUI.ViewModels
 
 
         [ICommand]
-        public async void SubmitBossDataButton()
+        public void SubmitBossDataButton()
         {
             try
             {
@@ -55,6 +56,12 @@ namespace Project_Invoice_MAUI.ViewModels
                 Error_Message_IS_Visble = await ChangeVisibleError();
             }
             
+        }
+
+        [ICommand]
+        public async void GoToNextPage()
+        {
+            await Shell.Current.GoToAsync(nameof(BankAccountView));
         }
     }
 }

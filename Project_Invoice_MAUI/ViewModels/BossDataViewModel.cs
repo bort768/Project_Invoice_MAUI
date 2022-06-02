@@ -1,5 +1,6 @@
 ﻿using Project_Invoice_MAUI.Models;
 using Project_Invoice_MAUI.Singleton;
+using Project_Invoice_MAUI.Views;
 
 namespace Project_Invoice_MAUI.ViewModels
 {
@@ -46,6 +47,12 @@ namespace Project_Invoice_MAUI.ViewModels
             BossData bossData = new BossData(Name, Last_Name, ID, Password); // po co?
                                                                              //MessageBox.Show("Dane zapisane", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
             firma.BossData = bossData;
+        }
+
+        [ICommand]
+        public async void GoToNextPage()
+        {
+            await Shell.Current.GoToAsync(nameof(BankAccountView));
         }
     }
 }

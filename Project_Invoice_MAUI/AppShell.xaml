@@ -10,7 +10,7 @@
     <ShellContent
         Shell.NavBarIsVisible="True"
         Title="Home"
-        ContentTemplate="{DataTemplate view:BossDataView}"
+        ContentTemplate="{DataTemplate view:HomeView}"
         Route="HomeView" />
 
 </Shell>

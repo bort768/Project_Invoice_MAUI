@@ -2,10 +2,111 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Project_Invoice_MAUI.Views.BankAccountView"
+             xmlns:viewmodel="clr-namespace:Project_Invoice_MAUI.ViewModels"
+             x:DataType="viewmodel:BankAccountViewModel"
              Title="BankAccountView">
-    <StackLayout>
-        <Label Text="Welcome to .NET MAUI!"
-                VerticalOptions="Center" 
-                HorizontalOptions="Center" />
+    <ContentPage.BindingContext>
+        <viewmodel:BankAccountViewModel/>
+    </ContentPage.BindingContext>
+    <StackLayout BackgroundColor="#272537">
+
+        <Frame BorderColor="Transparent"
+               Margin="10">
+            <Frame.Background>
+                <LinearGradientBrush EndPoint="1,2">
+                    <GradientStop Color="#5bc3ff" Offset="0.1"/>
+                    <GradientStop Color="#1aa0ff" Offset="1.2"/>
+                </LinearGradientBrush>
+            </Frame.Background>
+            <VerticalStackLayout>
+                <Label Text="Numer konta" 
+                       TextColor="White"
+                       Margin="10,5,0,0"/>
+
+
+                <Entry Text="{Binding Account_Number}"
+                            MaximumWidthRequest="400"
+                            MinimumWidthRequest="160"
+                            MinimumHeightRequest="20"
+                            MaximumHeightRequest="50"
+                            HorizontalOptions="Start"
+                            Margin="10,5,0,0"
+                            HorizontalTextAlignment="Center"
+                            Placeholder="Tu wpisz imię"
+                            Background="white"
+                            />
+
+                <Label Text="Nazwa banku" 
+                       TextColor="White"
+                       Margin="10,5,0,0"/>
+
+
+                <Entry Text="{Binding BankAccount_Name}"
+                        MaximumWidthRequest="400"
+                        MinimumWidthRequest="160"
+                        MinimumHeightRequest="20"
+                        MaximumHeightRequest="50"
+                        HorizontalOptions="Start"
+                        Margin="10,5,0,0"
+                        HorizontalTextAlignment="Center"
+                        Placeholder="Tu wpisz nazwisko"
+                        Background="white"
+                        />
+
+                <Label Text="waluta" 
+                       TextColor="White"
+                       Margin="10,5,0,0"/>
+
+
+                <Picker ItemsSource="{Binding CurrencyComboBox}"
+                        SelectedItem="{Binding Currency}"
+                        HorizontalOptions="Start"
+                        Margin="10,5,0,0"
+                        HorizontalTextAlignment="Center"
+                        Background="white"
+                        />
+
+                <Label Text="Kwota" 
+                       TextColor="White"
+                       Margin="10,5,0,0"/>
+
+
+                <Entry Text="{Binding Value}"
+                       MaximumWidthRequest="400"
+                       MinimumWidthRequest="160"
+                       MinimumHeightRequest="20"
+                       MaximumHeightRequest="50"
+                       HorizontalOptions="Start"
+                       Margin="10,5,0,10"
+                       HorizontalTextAlignment="Center"
+                       
+                       Background="white"
+                        />
+
+
+
+
+            </VerticalStackLayout>
+
+        </Frame>
+        <HorizontalStackLayout>
+            <Button Text="Submit"
+                    Command="{Binding SubmitCommandButtonCommand}"/>
+            <Button Text="Next"
+                    Command="{Binding GoToNextPageCommand}"/>
+        </HorizontalStackLayout>
+
+        <Border IsVisible="{Binding OK_Message_IS_Visble}"
+                Background="Green"
+                >
+            <Label Text="Dane zostały zapisane"/>
+        </Border>
+
+        <Border IsVisible="{Binding Error_Message_IS_Visble}"
+                Background="crimson"
+                >
+            <Label Text="bład dane nie zostały zapisane!"/>
+        </Border>
+
     </StackLayout>
 </ContentPage>

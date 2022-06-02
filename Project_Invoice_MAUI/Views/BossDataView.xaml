@@ -9,25 +9,26 @@
     <ContentPage.BindingContext>
         <viewmodel:BossDataViewModel/>
     </ContentPage.BindingContext>
-    <StackLayout BackgroundColor="#272537">
+    <Grid BackgroundColor="#272537"
+          RowDefinitions="*,auto">
+        <ScrollView>
 
             <Frame BorderColor="Transparent"
-               Margin="10">
+               Margin="10"
+                   MaximumHeightRequest="300">
                 <Frame.Background>
-                    <LinearGradientBrush EndPoint="1,1">
-                        <GradientStop Color="#FFBD8641"
-                                  Offset="0.0"/>
-                        <GradientStop Color="#FFB76D11"
-                                  Offset="1.1"/>
+                    <LinearGradientBrush EndPoint="1,2">
+                        <GradientStop Color="#5bc3ff" Offset="0.1"/>
+                        <GradientStop Color="#1aa0ff" Offset="1.2"/>
                     </LinearGradientBrush>
                 </Frame.Background>
                 <VerticalStackLayout>
-                    <Label Text="Nazwa firmy" 
+                    <Label Text="Imię" 
                        TextColor="White"
                        Margin="10,5,0,0"/>
 
 
-                    <Editor Text="{Binding Full_Name}"
+                    <Entry Text="{Binding Name}"
                             MaximumWidthRequest="400"
                             MinimumWidthRequest="160"
                             MinimumHeightRequest="20"
@@ -35,16 +36,16 @@
                             HorizontalOptions="Start"
                             Margin="10,5,0,0"
                             HorizontalTextAlignment="Center"
-                            Placeholder="Tu wpisz nazwe firmy"
+                            Placeholder="Tu wpisz imię"
                             Background="white"
                             />
 
-                    <Label Text="NIP" 
+                    <Label Text="Nazwisko" 
                        TextColor="White"
                        Margin="10,5,0,0"/>
 
 
-                    <Editor Text="{Binding NIP}"
+                    <Entry Text="{Binding Last_Name}"
                         MaximumWidthRequest="400"
                         MinimumWidthRequest="160"
                         MinimumHeightRequest="20"
@@ -52,16 +53,16 @@
                         HorizontalOptions="Start"
                         Margin="10,5,0,0"
                         HorizontalTextAlignment="Center"
-                        Placeholder="Tu wpisz NIP"
+                        Placeholder="Tu wpisz nazwisko"
                         Background="white"
                         />
 
-                    <Label Text="REGON" 
+                    <Label Text="ID" 
                        TextColor="White"
                        Margin="10,5,0,0"/>
 
 
-                    <Editor Text="{Binding REGON}"
+                    <Entry Text="{Binding ID}"
                         MaximumWidthRequest="400"
                         MinimumWidthRequest="160"
                         MinimumHeightRequest="20"
@@ -69,18 +70,41 @@
                         HorizontalOptions="Start"
                         Margin="10,5,0,0"
                         HorizontalTextAlignment="Center"
-                        Placeholder="Tu wpisz nazwe firmy"
+                        Placeholder="Tu wpisz id"
                         Background="white"
                         />
+
+                    <Label Text="Password" 
+                       TextColor="White"
+                       Margin="10,5,0,0"/>
+
+
+                    <Entry Text="{Binding Password}"
+                       MaximumWidthRequest="400"
+                       MinimumWidthRequest="160"
+                       MinimumHeightRequest="20"
+                       MaximumHeightRequest="50"
+                       HorizontalOptions="Start"
+                       Margin="10,5,0,10"
+                       HorizontalTextAlignment="Center"
+                       Placeholder="Tu wpisz hasło"
+                       Background="white"
+                       IsPassword="True"
+                        />
+
 
 
 
                 </VerticalStackLayout>
 
             </Frame>
-
-        <Button Text="Submit"
-            Command="{Binding SubmitBossDataButtonCommand}"/>
+        </ScrollView>
+        <HorizontalStackLayout>
+            <Button Text="Submit"
+                    Command="{Binding SubmitBossDataButtonCommand}"/>
+            <Button Text="Next"
+                    Command="{Binding GoToNextPageCommand}"/>
+        </HorizontalStackLayout>
 
         <Border IsVisible="{Binding OK_Message_IS_Visble}"
                 Background="Green"
@@ -88,14 +112,11 @@
             <Label Text="Dane zostały zapisane"/>
         </Border>
 
-        <Button Text="Submit"
-            Command="{Binding SubmitBossDataButtonCommand}"/>
-
         <Border IsVisible="{Binding Error_Message_IS_Visble}"
                 Background="crimson"
                 >
             <Label Text="bład dane nie zostały zapisane!"/>
         </Border>
 
-    </StackLayout>
+    </Grid>
 </ContentPage>

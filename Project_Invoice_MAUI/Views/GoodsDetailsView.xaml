@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Project_Invoice_MAUI.Views.AddGoodsView"
+             x:Class="Project_Invoice_MAUI.Views.GoodsDetailsView"
              xmlns:viewmodel="clr-namespace:Project_Invoice_MAUI.ViewModels"
-             x:DataType="viewmodel:AddGoodsViewModel"
-             Title="Dane Produktu">
-
+             Title="GoodsDetailsView">
     <ContentPage.BindingContext>
-        <viewmodel:AddGoodsViewModel/>
+        <viewmodel:GoodsDetailsViewModel/>
     </ContentPage.BindingContext>
     <StackLayout BackgroundColor="#353b48"
           >
@@ -26,7 +24,7 @@
                        Margin="10,5,0,0"/>
 
 
-                <Entry Text="{Binding Product_Name}"
+                <Entry Text="{Binding Goods.Product_Name}"
                        MaximumWidthRequest="400"
                        MinimumWidthRequest="160"
                        MaximumHeightRequest="50"
@@ -41,7 +39,7 @@
                        Margin="10,5,0,0"/>
 
 
-                <Entry Text="{Binding Product_Code}"
+                <Entry Text="{Binding Goods.Product_Code}"
                        MaximumWidthRequest="400"
                        MinimumWidthRequest="160"
                        MaximumHeightRequest="50"
@@ -55,7 +53,7 @@
                        Margin="10,5,0,0"/>
 
 
-                <Entry Text="{Binding Description}"
+                <Entry Text="{Binding Goods.Description}"
                        MaximumWidthRequest="400"
                        MinimumWidthRequest="160"
                        MaximumHeightRequest="50"
@@ -69,7 +67,7 @@
                        Margin="10,5,0,0"/>
 
 
-                <Entry Text="{Binding Price_Netto}"
+                <Entry Text="{Binding Goods.Price_Netto}"
                        MaximumWidthRequest="400"
                        MinimumWidthRequest="160"
                        MaximumHeightRequest="50"
@@ -77,27 +75,27 @@
                        Margin="10,5,0,0" 
                        Placeholder="Tu wpisz NIP"
                        Background="white"/>
-                
+
                 <Label Text="Vat" 
                        TextColor="White"
                        Margin="10,5,0,0"/>
 
 
                 <Picker ItemsSource="{Binding Vat_Combobox}"
-                        SelectedItem="{Binding Vat_Selected_Item}"
+                        SelectedItem="{Binding Goods.VAT_String}"
                        MaximumWidthRequest="400"
                        MinimumWidthRequest="160"
                        MaximumHeightRequest="50"
                        HorizontalOptions="Start"
                        Margin="10,5,0,0" 
                        Background="white"/>
-                
+
                 <Label Text="Cena Brutto Produktu" 
                        TextColor="White"
                        Margin="10,5,0,0"/>
 
 
-                <Entry Text="{Binding Price_Brutto}"
+                <Entry Text="{Binding Goods.Price_Brutto}"
                        MaximumWidthRequest="400"
                        MinimumWidthRequest="160"
                        MaximumHeightRequest="50"
@@ -106,13 +104,6 @@
                        Background="white"/>
             </VerticalStackLayout>
         </Frame>
-        <HorizontalStackLayout>
-            <Button Text="Add"
-                    Command="{Binding AddGoodsCommandCommand}"/>
-            <Button Text="Delete"
-                    Command="{Binding DeleteGoodsCommandCommand}"/>
-            <Button Text="Update"
-                    />
-        </HorizontalStackLayout>
+
     </StackLayout>
 </ContentPage>

@@ -34,5 +34,12 @@ namespace Project_Invoice_MAUI.Singleton
 
         public List<Goods> goods { get; set; } = new();
 
+        /// <summary>
+        /// zmiena do przesyłania wartosci 
+        /// usun wartosc po powrocie
+        /// </summary>
+        public static Goods Static_Goods;
+
+
     }
 }

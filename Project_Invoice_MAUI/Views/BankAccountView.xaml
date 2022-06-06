@@ -31,8 +31,8 @@
                             MaximumHeightRequest="50"
                             HorizontalOptions="Start"
                             Margin="10,5,0,0"
-                            HorizontalTextAlignment="Center"
-                            Placeholder="Tu wpisz imię"
+                            
+                            Placeholder="Tu wpisz numer konta"
                             Background="white"
                             />
 
@@ -48,8 +48,8 @@
                         MaximumHeightRequest="50"
                         HorizontalOptions="Start"
                         Margin="10,5,0,0"
-                        HorizontalTextAlignment="Center"
-                        Placeholder="Tu wpisz nazwisko"
+                        
+                        Placeholder="Tu wpisz nazwe konta"
                         Background="white"
                         />
 
@@ -60,9 +60,10 @@
 
                 <Picker ItemsSource="{Binding CurrencyComboBox}"
                         SelectedItem="{Binding Currency}"
+                        SelectedIndex="0"
                         HorizontalOptions="Start"
-                        Margin="10,5,0,0"
-                        HorizontalTextAlignment="Center"
+                        MinimumWidthRequest="100"
+                        Margin="10,5,0,0"                      
                         Background="white"
                         />
 
@@ -79,7 +80,6 @@
                        HorizontalOptions="Start"
                        Margin="10,5,0,10"
                        HorizontalTextAlignment="Center"
-                       
                        Background="white"
                         />
 
@@ -89,24 +89,23 @@
             </VerticalStackLayout>
 
         </Frame>
-        <HorizontalStackLayout>
+        <Grid ColumnDefinitions="*,*,*"
+              Grid.Row="1"
+              Margin="10" >
             <Button Text="Submit"
-                    Command="{Binding SubmitCommandButtonCommand}"/>
-            <Button Text="Next"
-                    Command="{Binding GoToNextPageCommand}"/>
-        </HorizontalStackLayout>
+                    Command="{Binding SubmitBankAccountCommand}"
+                    Margin="0,0,10,0"
+                    Grid.Column="0"/>
 
-        <Border IsVisible="{Binding OK_Message_IS_Visble}"
-                Background="Green"
-                >
-            <Label Text="Dane zostały zapisane"/>
-        </Border>
+            <Button Text="Dane szefa"
+                    Command="{Binding GoToBossDataViewCommand}"
+                    Grid.Column="1"/>
 
-        <Border IsVisible="{Binding Error_Message_IS_Visble}"
-                Background="crimson"
-                >
-            <Label Text="bład dane nie zostały zapisane!"/>
-        </Border>
+            <Button Text="Back"
+                    Command="{Binding GoBackCommand}"
+                    Margin="10,0,0,0"
+                    Grid.Column="2"/>
+        </Grid>
 
     </StackLayout>
 </ContentPage>

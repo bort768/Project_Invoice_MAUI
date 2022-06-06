@@ -548,9 +548,9 @@ namespace Project_Invoice_MAUI.SaveFileHelper
         #region Helper Methods
         //Create and row for the grid.
 
-        /// <summary>
-        /// Get the Total amount of the purcharsed items.
-        /// </summary>
+        // <summary>
+        // Get the Total amount of the purcharsed items.
+        // </summary>
         //private float GetTotalAmount(PdfGrid grid)
         //{
         //    float Total = 0f;

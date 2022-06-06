@@ -8,20 +8,19 @@
     <ContentPage.BindingContext>
         <viewmodel:CompanyDataViewModel/>
     </ContentPage.BindingContext>
-    <Grid RowDefinitions="*,auto">
-    <StackLayout BackgroundColor="#272537"
-                 Grid.Row="0">
-    <ScrollView>
+    <Grid RowDefinitions="*,auto"
+          BackgroundColor="{AppThemeBinding Dark=#272537, Light=#ecf0f1}">
+        <ScrollView Grid.Row="0">
     <StackLayout >
 
         <Frame BorderColor="Transparent"
                Margin="10">
             <Frame.Background>
-                <LinearGradientBrush EndPoint="1,1">
+                <LinearGradientBrush EndPoint="1,2">
                     <GradientStop Color="#FFBD8641"
-                                  Offset="0.0"/>
+                                  Offset="0.1"/>
                     <GradientStop Color="#FFB76D11"
-                                  Offset="1.1"/>
+                                  Offset="1.2"/>
                 </LinearGradientBrush>
             </Frame.Background>
             <VerticalStackLayout>
@@ -33,11 +32,9 @@
                     <Editor Text="{Binding Full_Name}"
                             MaximumWidthRequest="400"
                             MinimumWidthRequest="160"
-                            MinimumHeightRequest="20"
                             MaximumHeightRequest="50"
                             HorizontalOptions="Start"
-                            Margin="10,5,0,0"
-                            HorizontalTextAlignment="Center"
+                            Margin="10,5,0,0"                            
                             Placeholder="Tu wpisz nazwe firmy"
                             Background="white"
                             />
@@ -47,14 +44,13 @@
                        Margin="10,5,0,0"/>
 
 
-                <Editor Text="{Binding NIP}"
+                <Entry Text="{Binding NIP}"
                         MaximumWidthRequest="400"
                         MinimumWidthRequest="160"
-                        MinimumHeightRequest="20"
                         MaximumHeightRequest="50"
                         HorizontalOptions="Start"
                         Margin="10,5,0,0"
-                        HorizontalTextAlignment="Center"
+                        
                         Placeholder="Tu wpisz NIP"
                         Background="white"
                         />
@@ -64,14 +60,14 @@
                        Margin="10,5,0,0"/>
 
 
-                <Editor Text="{Binding REGON}"
+                <Entry Text="{Binding REGON}"
                         MaximumWidthRequest="400"
                         MinimumWidthRequest="160"
                         MinimumHeightRequest="20"
                         MaximumHeightRequest="50"
                         HorizontalOptions="Start"
                         Margin="10,5,0,0"
-                        HorizontalTextAlignment="Center"
+                        
                         Placeholder="Tu wpisz nazwe firmy"
                         Background="white"
                         />
@@ -156,12 +152,12 @@
                 </LinearGradientBrush>
             </Frame.Background>
 
-            <VerticalStackLayout>
+                    <VerticalStackLayout Margin="0,0,0,20">
             <Label Text="{Binding Invoice_format, StringFormat='Numeracja Dokumentu {0}'}"
                    TextColor="White"
                    FontSize="24"/>
 
-            <HorizontalStackLayout>
+            <HorizontalStackLayout >
 
                 <Label Text="Przez miesąc" 
                        TextColor="White"
@@ -191,15 +187,29 @@
 
     </StackLayout>
     </ScrollView>
-            <StackLayout Grid.Row="1">
-                <HorizontalStackLayout>
-                    <Button Text="Submit"
-                     Command="{Binding SubmitCompanyDataCommand}"/>
-                    <Button Text="Dane szefa"
-                     Command="{Binding  GoToNextPageCommand}"/>
-                </HorizontalStackLayout>
 
-                <Border IsVisible="{Binding OK_Message_IS_Visble}"
+            
+            <Grid ColumnDefinitions="*,*,*"
+                  Grid.Row="1"
+                  Margin="10"
+                  >
+                <Button Text="Submit"
+                        Command="{Binding SubmitCompanyDataCommand}"
+                        Margin="0,0,10,0"
+                        Grid.Column="0"/>
+                    <Button Text="Dane Banku"
+                            Command="{Binding GoToBankAccountViewCommand}"
+                            Grid.Column="1"/>
+
+                    <Button Text="Dane Szefa"
+                            Command="{Binding GoToBossDataViewCommand}"
+                            Margin="10,0,0,0"
+                            Grid.Column="2"/>
+            </Grid>
+        <!--<HorizontalStackLayout Grid.Row="1"
+                                   Margin="10">
+
+    <Border IsVisible="{Binding OK_Message_IS_Visble}"
                          Background="Green"
                          >
                      <Label Text="Dane zostały zapisane"/>
@@ -210,11 +220,11 @@
                          >
                      <Label Text="bład dane nie zostały zapisane!"/>
                  </Border>
-            </StackLayout>
+            </HorizontalStackLayout>-->
 
 
 
-        </StackLayout>
+        
     </Grid>
 
 </ContentPage>

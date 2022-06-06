@@ -1,4 +1,6 @@
-﻿namespace Project_Invoice_MAUI.Models
+﻿using Project_Invoice_MAUI.SaveFileHelper;
+
+namespace Project_Invoice_MAUI.Models
 {
     public class Goods
     {
@@ -10,7 +12,18 @@
         public double Price_Brutto { get; set; }
         public double Sum { get; set; }
         public double VAT { get; set; }
-        public string VAT_String { get; set; }
+        private string _Vat_string;
+        public string VAT_String { get => _Vat_string; 
+                set 
+            {
+                _Vat_string = value;
+                VAT = Vat_Helper.Vat_dictionary[VAT_String];
+                if (Price_Netto != 0)
+                {                   
+                    Price_Brutto = Math.Round(Price_Netto * VAT, 2);
+                }
+
+            } }
         public bool IsSelected { get; set; }
         public int Quantity { get; set; }
 

@@ -8,38 +8,42 @@
     <ContentPage.BindingContext>
         <viewmodel:HomeViewModel/>
     </ContentPage.BindingContext>
-    <StackLayout>
-        <Label Text="Welcome to .NET MAUI!"
-                VerticalOptions="Center" 
-                HorizontalOptions="Center" />
-        <Grid RowDefinitions="auto,auto"
-              ColumnDefinitions="auto,auto">
 
+        <Grid RowDefinitions="{OnIdiom Phone='*,*', Default='*,*,*,*'}"
+              ColumnDefinitions="{OnIdiom Phone='*,*', Default='Auto,*'}"             
+              BackgroundColor="#272537">
 
-            <Button Grid.Row="0"
-                    Grid.Column="0"
+            <!--Pózniej się tym zajme :)-->
+        <Button Grid.Row="{OnIdiom Phone=0, Default=0}"
+                    Grid.Column="{OnIdiom Phone=0, Default=0}"
                     Text="Dane firmy"
+                    Margin="10"
                     Command="{Binding GoToCompanyDataViewCommand}"/>
 
-            <Button Grid.Row="1"
-                    Grid.Column="0"
+        <Button Grid.Row="{OnIdiom Phone=0, Default=1}"
+                    Grid.Column="{OnIdiom Phone=1, Default=0}"
                     Text="Towary i usługi"
+                    Margin="10"
                     Command="{Binding GoToGoodsCommand}"/>
 
-            <Button Grid.Row="0"
-                    Grid.Column="1"
+        <Button Grid.Row="{OnIdiom Phone=1, Default=2}"
+                    Grid.Column="{OnIdiom Phone=0, Default=0}"
                     Text="Kontrahenci"
+                    Margin="10"
                     Command="{Binding GoToKontrahentsCommand}"/>
 
-            <Button Grid.Row="1"
-                    Grid.Column="1"
+        <Button Grid.Row="{OnIdiom Phone=1, Default=3}"
+                    Grid.Column="{OnIdiom Phone=1, Default=0}"
                     Text="Faktury Sprzedaży"
+                    Margin="10"
                     Command="{Binding GoToInvoiceSellCommand}"/>
 
 
         </Grid>
-        
-        
 
-    </StackLayout>
+    <!--tu wstaw graphy przychodów i stany magazynów na windowsa -->
+    
+    <!--<x:WidgetsPanel Grid.Column="{OnIdiom Phone=0, Default=1}"
+                        IsVisible="{OnIdiom Phone=False, Default=True}"/>-->
+
 </ContentPage>

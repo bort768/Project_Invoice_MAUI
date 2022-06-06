@@ -17,9 +17,9 @@
                Margin="10"
                    MaximumHeightRequest="300">
                 <Frame.Background>
-                    <LinearGradientBrush EndPoint="1,2">
+                    <LinearGradientBrush EndPoint="1,1">
                         <GradientStop Color="#5bc3ff" Offset="0.1"/>
-                        <GradientStop Color="#1aa0ff" Offset="1.2"/>
+                        <GradientStop Color="#1aa0ff" Offset="1.1"/>
                     </LinearGradientBrush>
                 </Frame.Background>
                 <VerticalStackLayout>
@@ -99,24 +99,24 @@
 
             </Frame>
         </ScrollView>
-        <HorizontalStackLayout>
+        <Grid ColumnDefinitions="*,*,*"
+              Grid.Row="1"
+              Margin="10" >
             <Button Text="Submit"
-                    Command="{Binding SubmitBossDataButtonCommand}"/>
-            <Button Text="Next"
-                    Command="{Binding GoToNextPageCommand}"/>
-        </HorizontalStackLayout>
+                    Command="{Binding SubmitBossDataButtonCommand}"
+                    Margin="0,0,10,0"
+                    Grid.Column="0"/>
+             
+            <Button Text="Dane Banku"
+                    Command="{Binding GoToBankAccountCommand}"
+                    Grid.Column="1"/>
 
-        <Border IsVisible="{Binding OK_Message_IS_Visble}"
-                Background="Green"
-                >
-            <Label Text="Dane zostały zapisane"/>
-        </Border>
+            <Button Text="Back"
+                    Command="{Binding GoBackCommand}"
+                    Margin="10,0,0,0"
+                    Grid.Column="2"/>
+        </Grid>
 
-        <Border IsVisible="{Binding Error_Message_IS_Visble}"
-                Background="crimson"
-                >
-            <Label Text="bład dane nie zostały zapisane!"/>
-        </Border>
 
     </Grid>
 </ContentPage>

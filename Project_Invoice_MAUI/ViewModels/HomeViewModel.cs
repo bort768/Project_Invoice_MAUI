@@ -18,7 +18,7 @@ namespace Project_Invoice_MAUI.ViewModels
         [ICommand]
         public async void GoToGoods()
         {
-            await Shell.Current.GoToAsync(nameof(AddGoodsView));
+            await Shell.Current.GoToAsync(nameof(AddGoodsCollectionView));
         }
 
         [ICommand]

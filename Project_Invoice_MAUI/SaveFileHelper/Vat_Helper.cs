@@ -15,6 +15,15 @@
         public const string VAT_3_String = "VAT 3%";
         public const string VAT_0_String = "VAT 0%";
 
+        public static Dictionary<string, double> Vat_dictionary = new Dictionary<string, double>() {
+                                                                    { VAT_23_String, VAT_23},
+                                                                    { VAT_7_String, VAT_7}, 
+                                                                    { VAT_6_String, VAT_6}, 
+                                                                    { VAT_3_String, VAT_3}, 
+                                                                    { VAT_0_String, VAT_0} };
+
+
+
         public static List<string> List_VAT_Strings = new List<string> { VAT_23_String, VAT_7_String, VAT_6_String, VAT_3_String, VAT_0_String };
     }
 }

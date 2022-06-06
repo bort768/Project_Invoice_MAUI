@@ -53,12 +53,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="CommunityToolkit.Maui" Version="1.0.0" />
 	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0-preview3" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.5" />
+	  <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	  <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
 	  <PackageReference Include="Syncfusion.Pdf.Net.Core" Version="20.1.0.57" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <MauiXaml Update="Styles\FlatEditor.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\AddGoodsCollectionView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\AddGoodsView.xaml">
@@ -71,6 +78,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\CompanyDataView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\GoodsDetailsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\HomeView.xaml">

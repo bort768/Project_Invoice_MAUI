@@ -1,4 +1,9 @@
-﻿using Project_Invoice_MAUI.Models;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using Newtonsoft.Json;
+using Project_Invoice_MAUI.Models;
+using Project_Invoice_MAUI.SavePathHelpers;
+using Project_Invoice_MAUI.Services;
 using Project_Invoice_MAUI.Singleton;
 using Project_Invoice_MAUI.Views;
 
@@ -57,6 +62,10 @@ namespace Project_Invoice_MAUI.ViewModels
         [ObservableProperty]
         private string _town;
 
+       
+
+        
+
 
         //TODO: dodaj sprawdzanie nulla
         public bool ValidateNip(string nip)
@@ -74,10 +83,49 @@ namespace Project_Invoice_MAUI.ViewModels
 
         public CompanyDataViewModel()
         {
+            //_sevices = new CompanyDataService();
+
             //usuń pózniej
             if (firma.CompanyData == null)
             {
-                firma.CompanyData = new("Hurtownia Artykułów Biurowych Bort sp. z o.o", "521-427-93-09", "012346678", "Kwiatowa", "6", "36-200", "Brzozów");
+                var stream = FileSystem.Current.AppDataDirectory + JsonFilesPath.COMPANY_DATA;
+                if (File.Exists(stream))
+                {
+                    firma.CompanyData = JsonConvert.DeserializeObject<CompanyData>(File.ReadAllText(stream));
+                }
+                //else
+                //{
+                //    firma.CompanyData = new CompanyData
+                //    {
+                //        Full_Name = "Hurtownia Artykułów Biurowych Bort sp. z o.o",
+                //        NIP = "521-427-93-09",
+                //        REGON = "012346678",
+                //        Street = "Kwiatowa",
+                //        House_Number = "6",/
+                //        ZIP_Code = "36-200",
+                //        Town = "Brzozów"
+                //    };
+                //    string output = JsonConvert.SerializeObject(firma.CompanyData, Formatting.Indented);
+                //    File.WriteAllText(stream, output);
+
+                //}
+
+                //desrialize document numbering
+                var streamDN = FileSystem.Current.AppDataDirectory + JsonFilesPath.DOCUMENT_NUMBERING;
+                if (File.Exists(streamDN))
+                {
+                    firma.DocumentNumbering = JsonConvert.DeserializeObject<DocumentNumbering>(File.ReadAllText(streamDN));
+                    Broken_By_Mounth = firma.DocumentNumbering.Broken_By_Mounth;
+                    Broken_By_Year = firma.DocumentNumbering.Broken_By_Year;
+                }
+                
+
+                //firma.CompanyData = JsonConvert.DeserializeObject<CompanyData>(output);
+            
+                
+                
+
+
             }
 
             if (firma.CompanyData != null)
@@ -111,25 +159,52 @@ namespace Project_Invoice_MAUI.ViewModels
         // TODO: dodaj sprawdzanie do nipu
         public async void SubmitCompanyData()
         {
-            if (ValidateNip(NIP))
+            if (NIP is not null && ValidateNip(NIP))
             {
-                firma.CompanyData = new CompanyData(Full_Name, NIP, REGON, Street, House_Number, ZIP_Code, Town);
-                //MessageBox.Show("Dane zapisane", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
-                
-                 OK_Message_IS_Visble = await ChangeVisibleOK();
+                firma.CompanyData = new CompanyData
+                {
+                    Full_Name = Full_Name,
+                    NIP = NIP,
+                    REGON = REGON,
+                    Street = Street,
+                    House_Number = House_Number,
+                    ZIP_Code = ZIP_Code,
+                    Town = Town
+                };
+
+                //JSON
+                var stream = FileSystem.Current.AppDataDirectory + JsonFilesPath.COMPANY_DATA;
+                string output = JsonConvert.SerializeObject(firma.CompanyData, Formatting.Indented);
+                File.WriteAllText(stream, output);
+
+
+                var streamDN = FileSystem.Current.AppDataDirectory + JsonFilesPath.DOCUMENT_NUMBERING;
+                string outputDN = JsonConvert.SerializeObject(firma.CompanyData, Formatting.Indented);
+                File.WriteAllText(streamDN, outputDN);
+
+               
+
+                await ToastSaveSucces();
 
             }
             else
             {
-                Error_Message_IS_Visble = await ChangeVisibleError();
+                await ToastSaveFail();
                 //MessageBox.Show("NIP nie prawidłowy", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
+
         [ICommand]
-        public async void GoToNextPage()
+        public async void GoToBankAccountView()
         {
             await Shell.Current.GoToAsync(nameof(BankAccountView));
+        }
+
+        [ICommand]
+        public async void GoToBossDataView()
+        {
+            await Shell.Current.GoToAsync(nameof(BossDataView));
         }
 
 
@@ -194,6 +269,9 @@ namespace Project_Invoice_MAUI.ViewModels
             {
                 Invoice_format = $"FV 1";
             }
+
+            
+
         }
         #endregion
     }

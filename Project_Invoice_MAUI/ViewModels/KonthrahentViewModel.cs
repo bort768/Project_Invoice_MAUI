@@ -1,4 +1,5 @@
 ﻿using Project_Invoice_MAUI.Models;
+using Project_Invoice_MAUI.Services;
 using Project_Invoice_MAUI.Singleton;
 
 
@@ -12,32 +13,24 @@ namespace Project_Invoice_MAUI.ViewModels
 
         Firma firma = Firma.GetInstance();
 
-        private string _lastVisetedKontrahent;
-        public string LastVisetedKontrahent
-        {
-            get
-            {
-                return _lastVisetedKontrahent;
-            }
-            set
-            {
-                _lastVisetedKontrahent = value;
-                int index = 0;
-                foreach (var kontrahent in firma.kontrahents)
-                {
-                    if (kontrahent.Company.Full_Name == value)
-                    {
-                        SaveToLocal(index);
-                    }
-                    index++;
-                }
-                OnPropertyChanged();
-            }
-        }
-
+        Kontrahent kontrahent_Static = Firma.Static_Kontrahent;
 
         //private ObservableCollection<string> _listaDoCombobox;
         public ObservableCollection<string> listaDoCombobox { get; set; }
+
+        [ObservableProperty]
+        [AlsoNotifyChangeFor(nameof(Button_Is_Not_enable))]
+        private bool _button_Is_Enabled;
+
+        public bool Button_Is_Not_enable => !Button_Is_Enabled;
+
+        [ObservableProperty]
+        [AlsoNotifyChangeFor(nameof(Is_Not_Selected))]
+        private bool _is_Selected;
+
+        public bool Is_Not_Selected => !Is_Selected;
+
+
 
         [ObservableProperty]
         private string _bankAccount_Name;
@@ -72,67 +65,88 @@ namespace Project_Invoice_MAUI.ViewModels
 
         public KonthrahentViewModel()
         {
-            if (firma.kontrahents != null)
+            if (kontrahent_Static is not null)
             {
-                int index = 0;
-                foreach (var kontrahent in firma.kontrahents)
+                company = new CompanyData
                 {
-                    if (kontrahent.Company.Full_Name == _lastVisetedKontrahent)
-                    {
-                        SaveToLocal(index);
-                    }
-                    index++;
-                }
+                    Full_Name     = kontrahent_Static.Company.Full_Name,  
+                    NIP           = kontrahent_Static.Company.NIP,         
+                    REGON         = kontrahent_Static.Company.REGON,       
+                    Street        = kontrahent_Static.Company.Street,      
+                    House_Number  = kontrahent_Static.Company.House_Number,
+                    ZIP_Code      = kontrahent_Static.Company.ZIP_Code,    
+                    Town          = kontrahent_Static.Company.Town
+                };
+                kontrahent = new(kontrahent_Static.BankAccount_Name, kontrahent_Static.Account_Number, company);
 
+                Full_Name = kontrahent_Static.Company.Full_Name;
+                NIP = kontrahent_Static.Company.NIP;
+                REGON = kontrahent_Static.Company.REGON;
+                Street = kontrahent_Static.Company.Street;
+                House_Number = kontrahent_Static.Company.House_Number;
+                ZIP_Code = kontrahent_Static.Company.ZIP_Code;
+                Town = kontrahent_Static.Company.Town;
 
-                listaDoCombobox = new();
-
-                //średnia optymalizcja jeśli chodzi o wieksze tabele
-                foreach (var item in firma.kontrahents)
-                {
-                    listaDoCombobox.Add(item.Company.Full_Name);
-                }
+                BankAccount_Name = kontrahent_Static.BankAccount_Name;
+                Account_Number = kontrahent_Static.Account_Number;
+                kontrahent.ID = kontrahent_Static.ID;
+                Is_Selected = kontrahent_Static.IsSelected;
 
             }
             else
             {
-                listaDoCombobox = new();
+                //listaDoCombobox = new();
 
                 firma.kontrahents = new();
-                firma.kontrahents.Add(new Kontrahent("BPK Oddział III w Brzozowie", "15 0011 0018 9123 3456 4567 8912",
-                    new CompanyData
-                    {
-                        Full_Name = "Dom Towarowy „KROS” SA",
-                        NIP = "117-00-88-765",
-                        REGON = "986674453",
-                        Street = "Brzozowska",
-                        House_Number = "56",
-                        ZIP_Code = "36-200",
-                        Town = "Brzozów"
-                    }));
 
-                firma.kontrahents.Add(new Kontrahent("BT Oddział w Brzozowie", "19 0000 1245 6778 9189 1223 3456",
-                    new CompanyData {
-                        Full_Name = "Dom Handlowy „Mrówka” sp. z.o.o.",
-                        NIP = "823 12 20 711",
-                        REGON = "74185296",
-                        Street = "Obwodowa",
-                        House_Number = "2",
-                        ZIP_Code = "36-200",
-                        Town = "Brzozów"
-                    }));
                     
             }
-
-
-
         }
 
         #region Commands
+
         [ICommand]
-        public void SubmitKontrahent()
+        public async void DeleteKontrahent()
         {
-            company = new CompanyData{
+            try
+            {
+                //var good = new Goods(_product_Name, _product_Code, _description, _price_Netto, _price_Brutto, _VAT, _Vat_Selected_Item);
+
+                await KontrahentService.DeleteKontrahent(kontrahent);
+                await Shell.Current.DisplayAlert("Towar usunięty", "Towar został usunięty", "ok");
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Błąd", ex.Message, "ok");
+
+            }
+
+        }
+
+        [ICommand]
+        public async void UpdateKontrahent()
+        {
+            try
+            {
+                //var good = new Goods(_product_Name, _product_Code, _description, _price_Netto, _price_Brutto, _VAT, _Vat_Selected_Item);
+
+                await KontrahentService.UpdateKontrahent(kontrahent);
+                await Shell.Current.DisplayAlert("Towar zaktualizowany", "Towar zaktualizowany", "ok");
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Błąd", ex.Message, "ok");
+                
+            }
+
+        }
+
+        [ICommand]
+        public async void AddKontrahent()
+        {
+            //submit goods
+            company = new CompanyData
+            {
                 Full_Name = _full_Name,
                 NIP = _nIP,
                 REGON = _REGON,
@@ -142,95 +156,25 @@ namespace Project_Invoice_MAUI.ViewModels
                 Town = _town
             };
             kontrahent = new(BankAccount_Name, Account_Number, company);
-            AddToKontrahents();
-            LastVisetedKontrahent = _full_Name;
-            listaDoCombobox.Add(_full_Name);
+
+            try
+            {
+                await KontrahentService.Addkontrahent(kontrahent);
+                firma.kontrahents.Add(kontrahent);
+                await ToastSaveSucces();
+            }
+            catch (Exception ex)
+            {
+
+                await Shell.Current.DisplayAlert("Błąd", ex.Message, "ok");
+            }
+
+
         }
-
-        [ICommand]
-        public void DeleteKontrahent()
-        {
-            RemoveFromKontrahents();
-        }
-
-        [ICommand]
-        async Task GoToDetailsAsync()
-        {
-            await Shell.Current.GoToAsync($"{nameof(BankAccountViewModel)}", true);
-        }
-
-
 
         #endregion
 
 
-        private void SaveToLocal(int index)
-        {
-            BankAccount_Name = firma.kontrahents[index].BankAccount_Name;
-            Account_Number = firma.kontrahents[index].Account_Number;
-            Full_Name = firma.kontrahents[index].Company.Full_Name;
-            NIP = firma.kontrahents[index].Company.NIP;
-            REGON = firma.kontrahents[index].Company.REGON;
-            Street = firma.kontrahents[index].Company.Street;
-            House_Number = firma.kontrahents[index].Company.House_Number;
-            Town = firma.kontrahents[index].Company.Town;
-            ZIP_Code = firma.kontrahents[index].Company.ZIP_Code;
-
-            //zrób kontrahenta do usuwania go
-            company = new CompanyData 
-            { Full_Name = _full_Name,
-              NIP = _nIP,
-              REGON = _REGON,
-              Street = _street,
-              House_Number = _house_Number,
-              ZIP_Code = _ZIP_Code,
-              Town = _town };
-            kontrahent = new(BankAccount_Name, Account_Number, company);
-        }
-
-        private void RemoveFromKontrahents()
-        {
-            if (firma.kontrahents == null)
-            {
-                //MessageBox.Show("Dane nie zostały usunięte", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            //To do naprawić to :) Kiedyś
-            else if (firma.kontrahents.Contains(kontrahent))
-            {
-                firma.kontrahents.Remove(kontrahent);
-            }
-            else
-            {
-                //MessageBox.Show("Dane nie zostały usunięte", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-        }
-
-        private void AddToKontrahents()
-        {
-            if (kontrahent == null)
-            {
-                //MessageBox.Show("Dane nie zostały zapisane", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            if (firma.kontrahents == null)
-            {
-                firma.kontrahents = new();
-                firma.kontrahents.Add(kontrahent);
-                //MessageBox.Show("Dane zapisane pomyślne", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else if (!firma.kontrahents.Contains(kontrahent))
-            {
-                firma.kontrahents.Add(kontrahent);
-                //MessageBox.Show("Dane zapisane pomyślne", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                //MessageBox.Show("Dane już istnieją", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-        }
+        
     }
 }

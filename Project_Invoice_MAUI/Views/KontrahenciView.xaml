@@ -3,9 +3,183 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Project_Invoice_MAUI.Views.KontrahenciView"
              xmlns:viewModel="clr-namespace:Project_Invoice_MAUI.ViewModels"
+             x:DataType="viewModel:KonthrahentViewModel"
              Title="KontrahenciView">
-    <StackLayout>
-        
+    <ContentPage.BindingContext>
+        <viewModel:KonthrahentViewModel/>
+    </ContentPage.BindingContext>
+    <StackLayout BackgroundColor="#353b48"
+          >
 
-    </StackLayout>
+            <Frame Margin="10"
+               BorderColor="Transparent">
+                <Frame.Background>
+                    <LinearGradientBrush EndPoint="1,2">
+                        <GradientStop Color="#5bc3ff" Offset="0.1"/>
+                        <GradientStop Color="#0097e6" Offset="1.2"/>
+                    </LinearGradientBrush>
+                </Frame.Background>
+                <VerticalStackLayout>
+                    <Label Text="Numer konta" 
+                       TextColor="White"
+                       Margin="10,5,0,0"/>
+
+
+                    <Entry Text="{Binding Account_Number}"
+                       MaximumWidthRequest="400"
+                       MinimumWidthRequest="160"
+                       MaximumHeightRequest="50"
+                       HorizontalOptions="Start"
+                       Margin="10,5,0,0" 
+                       Placeholder="Tu wpisz nazwe produktu"
+                       Background="white"/>
+
+
+                    <Label Text="Nazwa konta" 
+                       TextColor="White"
+                       Margin="10,5,0,0"/>
+
+
+                    <Entry Text="{Binding BankAccount_Name}"
+                       MaximumWidthRequest="400"
+                       MinimumWidthRequest="160"
+                       MaximumHeightRequest="50"
+                       HorizontalOptions="Start"
+                       Margin="10,5,0,0" 
+                       Placeholder="Tu wpisz kod produktu"
+                       Background="white"/>
+
+                    <Label Text="Nazwa kontrahenta" 
+                       TextColor="White"
+                       Margin="10,5,0,0"/>
+
+
+                    <Entry Text="{Binding Full_Name}"
+                       MaximumWidthRequest="400"
+                       MinimumWidthRequest="160"
+                       MaximumHeightRequest="50"
+                       HorizontalOptions="Start"
+                       Margin="10,5,0,0" 
+                       Placeholder="opis"
+                       Background="white"/>
+
+                    <Label Text="NIP" 
+                       TextColor="White"
+                       Margin="10,5,0,0"/>
+
+
+                    <Entry Text="{Binding NIP}"
+                        MaximumWidthRequest="400"
+                        MinimumWidthRequest="160"
+                        MaximumHeightRequest="50"
+                        HorizontalOptions="Start"
+                        Margin="10,5,0,0"
+                        
+                        Placeholder="Tu wpisz NIP"
+                        Background="white"
+                        />
+
+                    <Label Text="REGON" 
+                       TextColor="White"
+                       Margin="10,5,0,0"/>
+
+
+                    <Entry Text="{Binding REGON}"
+                        MaximumWidthRequest="400"
+                        MinimumWidthRequest="160"
+                        MinimumHeightRequest="20"
+                        MaximumHeightRequest="50"
+                        HorizontalOptions="Start"
+                        Margin="10,5,0,0"
+                        
+                        Placeholder="Tu wpisz nazwe firmy"
+                        Background="white"
+                        />
+
+
+
+                </VerticalStackLayout>
+
+            </Frame>
+
+
+            <Frame BorderColor="Transparent"
+               Margin="10">
+                <Frame.Background>
+                    <LinearGradientBrush EndPoint="1,1">
+                        <GradientStop Color="#FF3FA3AF"
+                                  Offset="0.0"/>
+                        <GradientStop Color="#FF233067"
+                                  Offset="1.1"/>
+                    </LinearGradientBrush>
+                </Frame.Background>
+                <VerticalStackLayout>
+
+                    <Label Text="Ulica" 
+                       TextColor="White"
+                       Margin="10,5,0,0"/>
+                    <Entry x:Name="Ulica"
+                       Text="{Binding Street}"
+                       MaximumWidthRequest="260"
+                       MinimumWidthRequest="160"
+                       HorizontalOptions="Start"
+                       Margin="10,5,0,0"
+                       Background="White"/>
+
+                    <Label Text="Numer Lokalu" 
+                       TextColor="White"
+                       Margin="10,5,0,0"/>
+
+                    <Entry x:Name="Numer_lokalu"
+                       MaximumWidthRequest="260"
+                       MinimumWidthRequest="160"
+                       HorizontalOptions="Start"
+                       Margin="10,5,0,0"
+                       Background="White"
+                       Text="{Binding House_Number}"/>
+
+                    <Label Text="Miasto" 
+                       TextColor="White"
+                       Margin="10,5,0,0"
+                       />
+                    <Entry x:Name="Town"
+                       MaximumWidthRequest="260"
+                       MinimumWidthRequest="160"
+                       HorizontalOptions="Start"
+                       Margin="10,5,0,0"
+                       Background="White"
+                       Text="{Binding Town}" />
+
+                    <Label Text="Kod Pocztowy" 
+                       TextColor="White"
+                       Margin="10,5,0,0"
+                       />
+
+                    <Entry x:Name="ZIP_Code"
+                       MaximumWidthRequest="260"
+                       MinimumWidthRequest="160"
+                       HorizontalOptions="Start"
+                       Margin="10,5,0,0"
+                       Background="White"
+                       Text="{Binding ZIP_Code}" />
+                </VerticalStackLayout>
+            
+
+            </Frame>
+            <HorizontalStackLayout Margin="10">
+                <Button Text="Add"
+                    Command="{Binding AddGoodsCommand}"
+                    IsVisible="{Binding Is_Not_Selected}"
+                    Margin="0,0,10,0"/>
+                <Button Text="Delete"
+                    Command="{Binding DeleteGoodsCommand}"
+                    IsVisible="{Binding Is_Selected}"
+                    Margin="0,0,10,0"/>
+                <Button Text="Update"
+                    Command="{Binding UpdateGoodsCommand}"
+                    IsVisible="{Binding Is_Selected}"
+                    Margin="0,0,10,0"/>
+            </HorizontalStackLayout>
+
+        </StackLayout>
 </ContentPage>

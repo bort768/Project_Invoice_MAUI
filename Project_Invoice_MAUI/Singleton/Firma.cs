@@ -40,6 +40,8 @@ namespace Project_Invoice_MAUI.Singleton
         /// </summary>
         public static Goods Static_Goods;
 
+        public static Kontrahent Static_Kontrahent;
+
 
     }
 }

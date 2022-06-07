@@ -13,6 +13,8 @@
         public string BankAccount_Name { get; set; }
         public string Account_Number { get; set; }
         public CompanyData Company { get; set; }
+        public int ID { get; set; }
+        public bool IsSelected { get; set; }
 
         public override string ToString()
         {

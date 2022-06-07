@@ -32,7 +32,7 @@
                        MaximumHeightRequest="50"
                        HorizontalOptions="Start"
                        Margin="10,5,0,0" 
-                       Placeholder="Tu wpisz NIP"
+                       Placeholder="Tu wpisz nazwe produktu"
                        Background="white"/>
 
 
@@ -47,7 +47,7 @@
                        MaximumHeightRequest="50"
                        HorizontalOptions="Start"
                        Margin="10,5,0,0" 
-                       Placeholder="Tu wpisz NIP"
+                       Placeholder="Tu wpisz kod produktu"
                        Background="white"/>
 
                 <Label Text="Opis Produktu" 
@@ -61,7 +61,7 @@
                        MaximumHeightRequest="50"
                        HorizontalOptions="Start"
                        Margin="10,5,0,0" 
-                       Placeholder="Tu wpisz NIP"
+                       Placeholder="opis"
                        Background="white"/>
 
                 <Label Text="Cena netto Produktu" 
@@ -75,7 +75,7 @@
                        MaximumHeightRequest="50"
                        HorizontalOptions="Start"
                        Margin="10,5,0,0" 
-                       Placeholder="Tu wpisz NIP"
+                       Placeholder=""
                        Background="white"/>
                 
                 <Label Text="Vat" 
@@ -106,13 +106,19 @@
                        Background="white"/>
             </VerticalStackLayout>
         </Frame>
-        <HorizontalStackLayout>
+        <HorizontalStackLayout Margin="10">
             <Button Text="Add"
-                    Command="{Binding AddGoodsCommandCommand}"/>
+                    Command="{Binding AddGoodsCommand}"
+                    IsVisible="{Binding Is_Not_Selected}"
+                    Margin="0,0,10,0"/>
             <Button Text="Delete"
-                    Command="{Binding DeleteGoodsCommandCommand}"/>
+                    Command="{Binding DeleteGoodsCommand}"
+                    IsVisible="{Binding Is_Selected}"
+                    Margin="0,0,10,0"/>
             <Button Text="Update"
-                    />
+                    Command="{Binding UpdateGoodsCommand}"
+                    IsVisible="{Binding Is_Selected}"
+                    Margin="0,0,10,0"/>
         </HorizontalStackLayout>
     </StackLayout>
 </ContentPage>

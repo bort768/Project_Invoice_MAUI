@@ -43,7 +43,25 @@ namespace Project_Invoice_MAUI.ViewModels
         }
 
         /// <summary>
-        /// metoda do wyświetlania potwerdzenia
+        /// Przeciązona metoda do wyswetlania toastu z domyslnym tekstem
+        /// </summary>
+        /// <param name="text"> tekst jaki ma pokazać toast</param>
+        /// <returns></returns>
+        public static async Task ToastSaveSucces(string text)
+        {
+            //toast
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            //str text = "Dane Zapisane!";
+            ToastDuration duration = ToastDuration.Short;
+            double fontSize = 18;
+
+            var toast = Toast.Make(text, duration, fontSize);
+
+            await toast.Show(cancellationTokenSource.Token);
+        }
+
+        /// <summary>
+        /// metoda do wyświetlania porazki
         /// </summary>
         /// <returns></returns>
         public static async Task ToastSaveFail()

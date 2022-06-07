@@ -16,11 +16,15 @@ namespace Project_Invoice_MAUI.ViewModels
         public List<string> Vat_Combobox { get; set; }
 
         //[ObservableProperty]
-        //Goods _goods;
+        //Goods goods2;
 
         Goods _goods = Firma.Static_Goods;
 
+        [ObservableProperty]
+        [AlsoNotifyChangeFor(nameof(Is_Not_Selected))]
+        private bool _is_Selected;
 
+        public bool Is_Not_Selected => !Is_Selected;
         
 
         private string _Vat_Selected_Item;
@@ -165,49 +169,58 @@ namespace Project_Invoice_MAUI.ViewModels
                 _price_Brutto = _goods.Price_Brutto;
                 _description = _goods.Description;
                 _Vat_Selected_Item = _goods.VAT_String;
-            }
-
-
-
-            if (firma.goods != null)
-            {
-                foreach (var Goods_Combobox in firma.goods)
-                {
-                    LastVisetedGoods.Add(Goods_Combobox.ToString());
-                }
+                _is_Selected = _goods.IsSelected;
             }
             else
             {
-                firma.goods = new();
-
+                _is_Selected = false;
             }
+
+
+
+            //if (firma.goods != null)
+            //{
+            //    foreach (var Goods_Combobox in firma.goods)
+            //    {
+            //        LastVisetedGoods.Add(Goods_Combobox.ToString());
+            //    }
+            //}
+            //else
+            //{
+            //    firma.goods = new();
+
+            //}
 
         }
 
 
         #region Commands
         [ICommand]
-        public async void DeleteGoodsCommand()
+        public async void DeleteGoods()
         {
             try
             {
-                await GoodsService.DeleteGoods(_goods);
+                var good = new Goods(_product_Name, _product_Code, _description, _price_Netto, _price_Brutto, _VAT, _Vat_Selected_Item);
+
+                await GoodsService.DeleteGoods(good);
                 await Shell.Current.DisplayAlert("Towar usunięty", "Towar został usunięty", "ok");
             }
             catch (Exception ex)
             {
                 await Shell.Current.DisplayAlert("Błąd", ex.Message, "ok");
-                throw;
+                
             }
             
         }
 
         [ICommand]
-        public async void UpdateGoodsCommand()
+        public async void UpdateGoods()
         {
             try
             {
-                await GoodsService.DeleteGoods(_goods);
+                var good = new Goods(_product_Name, _product_Code, _description, _price_Netto, _price_Brutto, _VAT, _Vat_Selected_Item);
+
+                await GoodsService.UpdateGoods(good);
                 await Shell.Current.DisplayAlert("Towar usunięty", "Towar został usunięty", "ok");
             }
             catch (Exception ex)
@@ -219,7 +232,7 @@ namespace Project_Invoice_MAUI.ViewModels
         }
 
         [ICommand]
-        public async void AddGoodsCommand()
+        public async void AddGoods()
         {
             //submit goods
             var containsConflict = firma.goods.Where(p => p.Product_Code == _product_Code);
@@ -228,8 +241,14 @@ namespace Project_Invoice_MAUI.ViewModels
             {
                 await Shell.Current.DisplayAlert("Błąd", "towar z tym kodem jest już w bazie", "ok");
             }
+            else
+            {
+                await GoodsService.AddGoods(new Goods(_product_Name, _product_Code, _description, _price_Netto, _price_Brutto, _VAT, _Vat_Selected_Item));
+                firma.goods.Add(new Goods(_product_Name, _product_Code, _description, _price_Netto, _price_Brutto, _VAT, _Vat_Selected_Item));
+                await ToastSaveSucces();
+            }
 
-            await GoodsService.AddGoods(new Goods(_product_Name, _product_Code, _description, _price_Netto, _price_Brutto, _VAT, _Vat_Selected_Item));
+
 
             //firma.goods.Add(new Goods(_product_Name, _product_Code, _description, _price_Netto, _price_Brutto, _VAT, _Vat_Selected_Item));
 
@@ -237,6 +256,7 @@ namespace Project_Invoice_MAUI.ViewModels
             //MessageBox.Show("Towar/Usługa został dodany", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
             //TO DO: sprawdz czy już istnieje // done
         }
+
 
 
         #endregion

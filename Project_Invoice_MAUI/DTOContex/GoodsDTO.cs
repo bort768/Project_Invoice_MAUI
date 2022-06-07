@@ -11,7 +11,7 @@ namespace Project_Invoice_MAUI.DbContexs
     {
         public string Product_Name { get; set; }
 
-        [PrimaryKey, AutoIncrement]
+        [PrimaryKey]
         public string Product_Code { get; set; }
         public int Product_Id { get; set; }
         public string Description { get; set; }

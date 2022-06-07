@@ -51,9 +51,10 @@ namespace Project_Invoice_MAUI.ViewModels
                 Goods.ForEach(Goods => List_of_goods.Add(Goods));
 
 
-                List_of_goods.Add(new Goods("Produkt", "23", "Tak", 23, 28.29, Vat_Helper.VAT_23, Vat_Helper.VAT_23_String));
-                List_of_goods.Add(new Goods("Taśma", "78", "Tak", 40, 49.2, Vat_Helper.VAT_7, Vat_Helper.VAT_7_String));
-                List_of_goods.Add(new Goods("UwU Shrek UwU", "69", "Tak", 100, 123, Vat_Helper.VAT_3, Vat_Helper.VAT_3_String));
+                //List_of_goods.Add(new Goods("Produkt", "23", "Tak", 23, 28.29, Vat_Helper.VAT_23, Vat_Helper.VAT_23_String));
+                //List_of_goods.Add(new Goods("Taśma", "78", "Tak", 40, 49.2, Vat_Helper.VAT_7, Vat_Helper.VAT_7_String));
+                //List_of_goods.Add(new Goods("UwU Shrek UwU", "69", "Tak", 100, 123, Vat_Helper.VAT_3, Vat_Helper.VAT_3_String));
+            
             }
             catch (Exception ex)
             {              
@@ -67,15 +68,11 @@ namespace Project_Invoice_MAUI.ViewModels
         }
 
         [ICommand]
-        async Task GoToDetails(Goods goods)
+        async Task GoToAddGoods()
         {
-            if (goods == null)
-                return;
-
-            await Shell.Current.GoToAsync($"{nameof(AddGoodsView)}", true, new Dictionary<string, object>
-        {
-            {"Goods", goods }
-        });
+            Firma.Static_Goods = null;
+            
+            await Shell.Current.GoToAsync($"{nameof(AddGoodsView)}", true);
         }
 
         [ICommand]
@@ -86,10 +83,12 @@ namespace Project_Invoice_MAUI.ViewModels
 
             //clear firma goods
             Firma.Static_Goods = null;
-
+            goods.IsSelected = true;
             //przypisanie wartosci
             Firma.Static_Goods = goods;
+
             await Shell.Current.GoToAsync($"{nameof(AddGoodsView)}", true);
+            //await Shell.Current.GoToAsync()
         }
 
 

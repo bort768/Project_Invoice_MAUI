@@ -14,12 +14,12 @@ namespace Project_Invoice_MAUI.Services
             if (db != null)
                 return;
 
-            var databasePath = Path.Combine(FileSystem.AppDataDirectory, "Goods.db");
+            var databasePath = Path.Combine(FileSystem.AppDataDirectory, "CompanyData.db");
 
             db = new SQLiteAsyncConnection(databasePath);
 
             await db.CreateTableAsync<GoodsDTO>();
-            //await db.CreateTableAsync<KontrahentsDTO>();
+            await db.CreateTableAsync<KontrahentsDTO>();
         }
 
         public static async Task<List<Goods>> GetGoods()
@@ -36,7 +36,7 @@ namespace Project_Invoice_MAUI.Services
         public static async Task UpdateGoods(Goods goods)
         {
             await Init();
-            var goodsDTOs = ToGoodsDTO(goods);
+            GoodsDTO goodsDTOs = ToGoodsDTO(goods);
             await db.UpdateAsync(goodsDTOs);
         }
 

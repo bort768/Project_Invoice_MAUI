@@ -1,5 +1,6 @@
 ﻿
 using Project_Invoice_MAUI.Models;
+using Project_Invoice_MAUI.Services;
 using Syncfusion.Drawing;
 using Syncfusion.Pdf;
 using Syncfusion.Pdf.Graphics;
@@ -66,23 +67,31 @@ namespace Project_Invoice_MAUI.SaveFileHelper
 
                 //image
                 Assembly assemblyImage = typeof(MainPage).GetTypeInfo().Assembly;
+                var assembly2 = Assembly.GetExecutingAssembly();
+                //string resourceName = assembly2.GetManifestResourceStream("ayayyaa.png");
+                                        
                 string basePathImage = "Project_Invoice_MAUI.Resources.Images.";
-                Stream ImageStream = assemblyImage.GetManifestResourceStream(basePathImage + "");
+                //string basePathImage2 = "Resources.Images.";
+                Stream ImageStream = assemblyImage.GetManifestResourceStream(basePathImage + "ayayyaa.png");
+
                 PdfBitmap image = new PdfBitmap(ImageStream);
-
-                RectangleF bounds = new RectangleF(10, 25, image.Width / 2, image.Height / 2);
-
-                page.Graphics.DrawImage(image, bounds);
 
                 //Get the font file stream from the assembly. 
                 Assembly assembly = typeof(MainPage).GetTypeInfo().Assembly;
                 string basePath = "Project_Invoice_MAUI.Resources.Fonts.";
                 Stream fontStream = assembly.GetManifestResourceStream(basePath + "OpenSans-Regular.ttf");
 
+                //PdfBitmap image = new PdfBitmap(fontStream);
+                RectangleF bounds = new RectangleF(10, 25, image.Width / 2, image.Height / 2);
+
+                page.Graphics.DrawImage(image, bounds);
+
+
+
                 //Create a PdfTrueTypeFont from the stream with the different sizes. 
-                PdfTrueTypeFont headerFont = new PdfTrueTypeFont(fontStream, 30, PdfFontStyle.Regular);
-                PdfTrueTypeFont timesRoman = new PdfTrueTypeFont(fontStream, 18, PdfFontStyle.Regular); //arialRegularFont
-                PdfTrueTypeFont arialBoldFont = new PdfTrueTypeFont(fontStream, 9, PdfFontStyle.Bold);
+                PdfTrueTypeFont headerFont = new PdfTrueTypeFont(fontStream, 8f, PdfFontStyle.Regular);
+                PdfTrueTypeFont timesRoman = new PdfTrueTypeFont(fontStream, 10f, PdfFontStyle.Regular); //arialRegularFont
+                PdfTrueTypeFont arialBoldFont = new PdfTrueTypeFont(fontStream, 9f, PdfFontStyle.Bold);
 
                 //PdfFont timesRoman = new PdfTrueTypeFont(new Font("Times New Roman", 10), true);
 
@@ -266,9 +275,9 @@ namespace Project_Invoice_MAUI.SaveFileHelper
                 {
                     PdfGridRow amountVATGridrow = amountVATGrid.Rows.Add();
                     amountVATGridrow.Cells[0].Value = $"Podatek {billsSums[i].Vat_name}";
-                    amountVATGridrow.Cells[1].Value = $"{billsSums[i].Sum_Netto}";
-                    amountVATGridrow.Cells[2].Value = $"{billsSums[i].Sum_VAT}";
-                    amountVATGridrow.Cells[3].Value = $"{billsSums[i].Sum_Brutto}";
+                    amountVATGridrow.Cells[1].Value = $"{Math.Round(billsSums[i].Sum_Netto, 2)}";
+                    amountVATGridrow.Cells[2].Value = $"{Math.Round(billsSums[i].Sum_VAT, 2)}";
+                    amountVATGridrow.Cells[3].Value = $"{Math.Round(billsSums[i].Sum_Brutto, 2)}";
 
 
                 }
@@ -344,10 +353,10 @@ namespace Project_Invoice_MAUI.SaveFileHelper
 
                 for (int i = 0; i < amountVATGrid.Rows.Count; i++)
                 {
-                    pdfGrid.Rows[i].Cells[0].StringFormat = new PdfStringFormat(PdfTextAlignment.Left, PdfVerticalAlignment.Middle);
-                    pdfGrid.Rows[i].Cells[1].StringFormat = new PdfStringFormat(PdfTextAlignment.Right, PdfVerticalAlignment.Middle);
-                    pdfGrid.Rows[i].Cells[2].StringFormat = new PdfStringFormat(PdfTextAlignment.Right, PdfVerticalAlignment.Middle);
-                    pdfGrid.Rows[i].Cells[3].StringFormat = new PdfStringFormat(PdfTextAlignment.Right, PdfVerticalAlignment.Middle);
+                    amountVATGrid.Rows[i].Cells[0].StringFormat = new PdfStringFormat(PdfTextAlignment.Left, PdfVerticalAlignment.Middle);
+                    amountVATGrid.Rows[i].Cells[1].StringFormat = new PdfStringFormat(PdfTextAlignment.Right, PdfVerticalAlignment.Middle);
+                    amountVATGrid.Rows[i].Cells[2].StringFormat = new PdfStringFormat(PdfTextAlignment.Right, PdfVerticalAlignment.Middle);
+                    amountVATGrid.Rows[i].Cells[3].StringFormat = new PdfStringFormat(PdfTextAlignment.Right, PdfVerticalAlignment.Middle);
                 }
 
                 //Creates the layout format for grid
@@ -359,7 +368,7 @@ namespace Project_Invoice_MAUI.SaveFileHelper
 
                 //Draws the grid to the PDF page.
                 PdfGridCellStyle amountVatheaderStyle = new PdfGridCellStyle();
-                PdfGridRow VatSumheader = pdfGrid.Headers[0];
+                PdfGridRow VatSumheader = amountVATGrid.Headers[0];
                 amountVatheaderStyle.Borders.All = new PdfPen(new PdfColor(126, 151, 173));
                 amountVatheaderStyle.BackgroundBrush = new PdfSolidBrush(new PdfColor(126, 151, 173));
                 amountVatheaderStyle.TextBrush = PdfBrushes.White;
@@ -367,7 +376,7 @@ namespace Project_Invoice_MAUI.SaveFileHelper
 
                 VatSumheader.ApplyStyle(amountVatheaderStyle);
 
-                PdfGridLayoutResult vatGridResult = pdfGrid.Draw(gridResult.Page, new RectangleF(new PointF(graphics.ClientSize.Width / 2 - 50f, gridResult.Bounds.Bottom + 30f),
+                PdfGridLayoutResult vatGridResult = amountVATGrid.Draw(gridResult.Page, new RectangleF(new PointF(graphics.ClientSize.Width / 2 - 50f, gridResult.Bounds.Bottom + 30f),
                     new SizeF(graphics.ClientSize.Width / 2 + 50f, gridResult.Bounds.Right)), vatLayoutFormat);
 
 
@@ -384,7 +393,7 @@ namespace Project_Invoice_MAUI.SaveFileHelper
 
                 NameOfSum.Brush = PdfBrushes.White;
 
-                PdfTextElement SumValue = new PdfTextElement($"{bill} PLN", timesRoman);
+                PdfTextElement SumValue = new PdfTextElement($"{Math.Round(bill, 2)} PLN", timesRoman);
 
                 SumValue.Brush = PdfBrushes.White;
 
@@ -472,43 +481,57 @@ namespace Project_Invoice_MAUI.SaveFileHelper
 
 
 
-
                 using MemoryStream ms = new();
-                //Saves the presentation to the memory stream.
+                //Saves the PDF to the memory stream.
                 document.Save(ms);
+                //Close the PDF document
+                document.Close(true);
                 ms.Position = 0;
+                //Saves the memory stream as file.
+                SaveService saveService = new();       
+                //saveService.SaveAndView("Invoice.pdf", "application/pdf", ms);
+                //using MemoryStream ms = new();
+                //Saves the presentation to the memory stream.
+                //document.Save(ms);
+                //ms.Position = 0;
                 //Saves the memory stream as a file.
                 //DependencyService.Get<ISave>().SaveAndView("Invoice.pdf", "application/pdf", ms);
+
                 if (Document_Numbering != null)
                 {
                     if (Document_Numbering.Broken_By_Year && Document_Numbering.Broken_By_Mounth)
                     {
-                        DependencyService.Get<ISave>().SaveAndView($"Faktury/FS {Invoice_Number}_{DataWystawienia.ToString("MM")}_{DataWystawienia.ToString("yyyy")}.pdf", "application/pdf", ms);
+                        saveService.SaveAndView($"FS {Invoice_Number}_{DataWystawienia.ToString("MM")}_{DataWystawienia.ToString("yyyy")}.pdf", "application/pdf", ms);
+                        //DependencyService.Get<ISave>().SaveAndView(, "application/pdf", ms);
                         //document.Save($"Faktury/FS {Invoice_Number}_{DataWystawienia.ToString("MM")}_{DataWystawienia.ToString("yyyy")}.pdf");
                     }
                     else if (Document_Numbering.Broken_By_Year)
                     {
-                        DependencyService.Get<ISave>().SaveAndView($"Faktury/FS {Invoice_Number}_{DataWystawienia.ToString("yyyy")}.pdf", "application/pdf", ms);
+                        saveService.SaveAndView($"FS {Invoice_Number}_{DataWystawienia.ToString("yyyy")}.pdf", "application/pdf", ms);
+                        //DependencyService.Get<ISave>().SaveAndView "application/pdf", ms);
                     }
                     else if (Document_Numbering.Broken_By_Mounth)
                     {
+                        saveService.SaveAndView($"FS {Invoice_Number}_{DataWystawienia.ToString("MM")}.pdf", "application/pdf", ms);
                         //document.Save($"Faktury/FS {Invoice_Number}_{DataWystawienia.ToString("MM")}.pdf");
-                        DependencyService.Get<ISave>().SaveAndView($"Faktury/FS {Invoice_Number}_{DataWystawienia.ToString("MM")}.pdf", "application/pdf", ms);
+                        //DependencyService.Get<ISave>().SaveAndView($"Faktury/FS {Invoice_Number}_{DataWystawienia.ToString("MM")}.pdf", "application/pdf", ms);
                     }
                     else
                     {
-                        DependencyService.Get<ISave>().SaveAndView("Faktury/FS {Invoice_Number}.pdf", "application/pdf", ms);
+                        saveService.SaveAndView($"FS {Invoice_Number}.pdf", "application/pdf", ms);
+                        //DependencyService.Get<ISave>().SaveAndView("Faktury/FS {Invoice_Number}.pdf", "application/pdf", ms);
                         //document.Save($"Faktury/FS {Invoice_Number}.pdf");
                     }
                 }
                 else
                 {
-                    DependencyService.Get<ISave>().SaveAndView($"Faktury/FS {Invoice_Number}.pdf", "application/pdf", ms);
+                    saveService.SaveAndView($"FS {Invoice_Number}.pdf", "application/pdf", ms);
+                    //DependencyService.Get<ISave>().SaveAndView($"Faktury/FS {Invoice_Number}.pdf", "application/pdf", ms);
                 }
                 //document.Save($"Faktury/FS {Invoice_Number}_{dataWystawienia.ToString("MM")}_{dataWystawienia.ToString("yyyy")}.pdf");
 
                 //Close the document
-                document.Close(true);
+                //document.Close(true);
 
 
                 //Process.Start("Sample.pdf");
@@ -538,11 +561,11 @@ namespace Project_Invoice_MAUI.SaveFileHelper
                 PdfGridRow row = grid.Rows.Add();
                 row.Cells[0].Value = product_Name;
                 row.Cells[1].Value = product_Code;
-                row.Cells[2].Value = price_Netto;
+                row.Cells[2].Value = price_Netto.ToString();
                 row.Cells[3].Value = vAT_String;
-                row.Cells[4].Value = price_Brutto;
-                row.Cells[5].Value = quantity;
-                row.Cells[6].Value = sum;
+                row.Cells[4].Value = price_Brutto.ToString();
+                row.Cells[5].Value = quantity.ToString();
+                row.Cells[6].Value = sum.ToString();
             }
         }
         #region Helper Methods
@@ -563,6 +586,14 @@ namespace Project_Invoice_MAUI.SaveFileHelper
         //    return Total;
 
         //}
+
+        public async Task<string> ReadTextFile(string filePath)
+        {
+            using Stream fileStream = await FileSystem.Current.OpenAppPackageFileAsync(filePath);
+            using StreamReader reader = new StreamReader(fileStream);
+
+            return await reader.ReadToEndAsync();
+        }
         #endregion
     }
 }

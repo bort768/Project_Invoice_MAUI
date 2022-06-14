@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Project_Invoice_MAUI.ViewModels
 {
-    public partial class KontrahentCollectionViewModel : BaseViewModel
+    public partial class KontrahentCollectionViewModel : BaseViewModel 
     {
         public ObservableCollection<Kontrahent> List_of_Kontrahents { get; set; } = new();
 
@@ -19,9 +19,11 @@ namespace Project_Invoice_MAUI.ViewModels
         public KontrahentCollectionViewModel()
         {
             Title = "Lista Kontrahentów";
+            Task loadKontrahent = GetKontrahents();
         }
 
-        async void GetKontrahents()
+        [ICommand]
+        async Task GetKontrahents()
         {
             
             if (IsBusy)
@@ -35,7 +37,7 @@ namespace Project_Invoice_MAUI.ViewModels
                 if (List_of_Kontrahents.Count != 0)
                     List_of_Kontrahents.Clear();
 
-                AddRadomData();
+                //AddRadomData();
                 //no nie jest to optymalne
                 firma.kontrahents = kontrahents;
 
@@ -82,11 +84,21 @@ namespace Project_Invoice_MAUI.ViewModels
                 }));
         }
 
+
+
         [ICommand]
-        async void GoToAddKontrahent()
+        async Task GoToAddKontrahents()
         {
             await Shell.Current.GoToAsync(nameof(KontrahenciView), true);
         }
+
+        [ICommand]
+        async Task GoToAdd()
+        {
+            await Shell.Current.GoToAsync(nameof(KontrahenciView), true);
+        }
+
+
 
         [ICommand]
         async Task GoToDetailsEdit(Kontrahent kontrahent)
@@ -100,7 +112,7 @@ namespace Project_Invoice_MAUI.ViewModels
             //przypisanie wartosci
             Firma.Static_Kontrahent = kontrahent;
 
-            await Shell.Current.GoToAsync(nameof(KontrahenciView), true);
+            await Shell.Current.GoToAsync($"{nameof(KontrahentCollectionView)}/{nameof(KontrahenciView)}", true);
             //await Shell.Current.GoToAsync()
         }
     }

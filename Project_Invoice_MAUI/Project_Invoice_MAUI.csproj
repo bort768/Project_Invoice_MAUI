@@ -49,7 +49,26 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiFont Remove="Resources\Fonts\arial.ttf" />
+	  <MauiFont Remove="Resources\Fonts\OpenSans-Regular.ttf" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiImage Remove="Resources\Images\ayayyaa.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Platforms\Android\Resources\xml\file_paths.xml" />
+	  <None Remove="Properties\launchSettings.json" />
+	  <None Remove="Resources\Fonts\arial.ttf" />
 	  <None Remove="Resources\Images\ayayyaa.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Properties\launchSettings.json" />
+	  <EmbeddedResource Include="Resources\Fonts\arial.ttf" />
+	  <EmbeddedResource Include="Resources\Fonts\OpenSans-Regular.ttf" />
+	  <EmbeddedResource Include="Resources\Images\ayayyaa.png" />
 	</ItemGroup>
 
 	<ItemGroup>

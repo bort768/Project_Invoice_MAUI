@@ -11,6 +11,9 @@ public partial class AppShell : Shell
         Routing.RegisterRoute($"{nameof(AddGoodsCollectionView)}/{nameof(AddGoodsView)}", typeof(AddGoodsView));
         Routing.RegisterRoute(nameof(AddGoodsCollectionView), typeof(AddGoodsCollectionView));
 
+        Routing.RegisterRoute($"{nameof(KontrahentCollectionView)}/{nameof(KontrahenciView)}", typeof(KontrahenciView));
+        Routing.RegisterRoute(nameof(KontrahentCollectionView), typeof(KontrahentCollectionView));
+
         Routing.RegisterRoute(nameof(InvoiceViewSell), typeof(InvoiceViewSell));
 
         //Company data
@@ -20,7 +23,7 @@ public partial class AppShell : Shell
 
         Routing.RegisterRoute(nameof(HomeView), typeof(HomeView));
 
-        Routing.RegisterRoute(nameof(KontrahenciView), typeof(KontrahenciView));
+
         //Routing.RegisterRoute(nameof(AddGoodsView), typeof(AddGoodsView));
     }
 }

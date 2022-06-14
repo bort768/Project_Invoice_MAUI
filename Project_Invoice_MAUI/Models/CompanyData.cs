@@ -1,13 +1,12 @@
-﻿using SQLite;
+﻿
 
 namespace Project_Invoice_MAUI.Models
 
 {
     public class CompanyData
     {
-
+        public int CompanyID { get; set; }
         public string Full_Name { get; set; }
-        [PrimaryKey]
         public string NIP { get; set; }
         public string REGON { get; set; }
         public string Street { get; set; }

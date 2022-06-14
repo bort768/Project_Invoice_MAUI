@@ -25,8 +25,7 @@ namespace Project_Invoice_MAUI.ViewModels
         public AddGoodsCollectionViewModel()
         {
             Title = "Lista produktów";
-
-
+            Task LoadList = GetGoodsAsync();
         }
 
         [ICommand]
@@ -43,17 +42,12 @@ namespace Project_Invoice_MAUI.ViewModels
                 if (List_of_goods.Count != 0)
                     List_of_goods.Clear();
 
-
                 //no nie jest to optymalne
                 firma.goods = Goods;
 
                 // wywala bład// juz nie
                 Goods.ForEach(Goods => List_of_goods.Add(Goods));
 
-
-                //List_of_goods.Add(new Goods("Produkt", "23", "Tak", 23, 28.29, Vat_Helper.VAT_23, Vat_Helper.VAT_23_String));
-                //List_of_goods.Add(new Goods("Taśma", "78", "Tak", 40, 49.2, Vat_Helper.VAT_7, Vat_Helper.VAT_7_String));
-                //List_of_goods.Add(new Goods("UwU Shrek UwU", "69", "Tak", 100, 123, Vat_Helper.VAT_3, Vat_Helper.VAT_3_String));
             
             }
             catch (Exception ex)

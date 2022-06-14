@@ -2,10 +2,289 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Project_Invoice_MAUI.Views.InvoiceViewSell"
-             Title="InvoiceViewSell">
-    <StackLayout>
-        <Label Text="Welcome to .NET MAUI!"
-                VerticalOptions="Center" 
-                HorizontalOptions="Center" />
-    </StackLayout>
+             xmlns:viewmodel="clr-namespace:Project_Invoice_MAUI.ViewModels"
+             x:DataType="viewmodel:InvoiceViewModel"
+             xmlns:model="clr-namespace:Project_Invoice_MAUI.Models"
+             Title="UwU">
+    <ContentPage.BindingContext>
+        <viewmodel:InvoiceViewModel/>
+    </ContentPage.BindingContext>
+  
+    <ScrollView>
+
+    <Grid BackgroundColor="#272537"
+          RowDefinitions="Auto,Auto,*,*,*">
+        <Frame BorderColor="Transparent"
+               Margin="10"
+               Grid.Row="0">
+            <Frame.Background>
+                <LinearGradientBrush EndPoint="1,1">
+                    <GradientStop Color="#FF3FA3AF"
+                                  Offset="0.0"/>
+                    <GradientStop Color="#FF233067"
+                                  Offset="1.1"/>
+                </LinearGradientBrush>
+            </Frame.Background>
+            <VerticalStackLayout>
+                <Label Text="{Binding Invoice_Format, StringFormat='Faktura Sprzedaży nr: {0}'}"
+                   TextColor="White"
+                   FontAttributes="Bold"/>
+                <HorizontalStackLayout>
+                    <Label Text="Nabywca"
+                           TextColor="White"
+                           VerticalOptions="Center"
+                           FontAttributes="Bold"/>
+                    <Picker ItemsSource="{Binding List_Of_Kontrahents}"
+                            SelectedItem="{Binding Selected_Kontrahent}"
+                            MinimumHeightRequest="10"                        
+                            SelectedIndex="0"
+                            HorizontalOptions="Start"
+                            MinimumWidthRequest="200"
+                            
+                            Margin="10,5,0,0"                      
+                            Background="white"/>
+                </HorizontalStackLayout>
+                <Label Text="Dane nabywcy:"
+                       TextColor="White"/>
+                <Label Text="{Binding Selected_Kontrahent.Company.Full_Name, StringFormat='Nazwa: {0}'}"
+                       TextColor="White"/>
+                <Label Text="{Binding Selected_Kontrahent.Company.NIP, StringFormat='NIP: {0}'}"
+                       TextColor="White"/>
+                <HorizontalStackLayout>
+                    <Label Text="{Binding Selected_Kontrahent.Company.Town}"
+                           Margin="0,0,0,0"
+                           TextColor="White"/>
+                    <Label Text="{Binding Selected_Kontrahent.Company.Street}"
+                           Margin="5,0,0,0"
+                           TextColor="White"/>
+                    <Label Text="{Binding Selected_Kontrahent.Company.House_Number}"
+                           Margin="5,0,0,0"
+                           TextColor="White"/>
+                    <Label Text="{Binding Selected_Kontrahent.Company.ZIP_Code}"
+                           Margin="5,0,0,0"
+                           TextColor="White"/>
+                </HorizontalStackLayout>
+
+
+            </VerticalStackLayout>
+
+        </Frame>
+
+        <Frame BorderColor="Transparent"
+               Margin="10"
+               Grid.Row="1">
+            <Frame.Background>
+                <LinearGradientBrush EndPoint="1,1">
+                    <GradientStop Color="#FF3FA3AF"
+                                  Offset="0.0"/>
+                    <GradientStop Color="#FF233067"
+                                  Offset="1.1"/>
+                </LinearGradientBrush>
+            </Frame.Background>
+            <VerticalStackLayout>
+                <Label Text="Data wystawienia:"
+                   TextColor="White"
+                   FontAttributes="Bold"/>
+                <DatePicker Date="{Binding DataWystawienia}"
+                            BackgroundColor="White"
+                            Margin="0,10,0,10"/>
+
+                <Label Text="Data dostawy:"
+                       TextColor="White"
+                       FontAttributes="Bold"/>
+                <DatePicker Date="{Binding DataDostawy}"
+                            BackgroundColor="White"
+                            Margin="0,10,0,10"/>
+
+  
+                <Label Text="Dane sprzedawcy:"
+                       TextColor="White"/>
+                <Label Text="{Binding companyData.Full_Name}"
+                       TextColor="White"/>
+                <Label Text="{Binding companyData.NIP, StringFormat='NIP: {0}'}"
+                       TextColor="White"/>
+                <HorizontalStackLayout>
+                    <Label Text="{Binding companyData.Town}"
+                           TextColor="White"/>
+                    <Label Text="{Binding companyData.Street}"
+                           Margin="5,0,0,0"
+                           TextColor="White"/>
+                    <Label Text="{Binding companyData.House_Number}"
+                           Margin="5,0,0,0"
+                           TextColor="White"/>
+                    <Label Text="{Binding companyData.ZIP_Code}"
+                           Margin="10,0,0,0"
+                           TextColor="White"/>
+                </HorizontalStackLayout>
+
+
+            </VerticalStackLayout>
+
+        </Frame>
+        <Grid RowDefinitions="auto,auto"
+              Grid.Row="2">
+            <Frame BorderColor="Transparent"
+               Margin="10"
+               Grid.Row="0">
+            
+            
+            <Frame.Background>
+                <LinearGradientBrush EndPoint="1,1">
+                    <GradientStop Color="#FF3FA3AF"
+                                  Offset="0.0"/>
+                    <GradientStop Color="#FF233067"
+                                  Offset="1.1"/>
+                </LinearGradientBrush>
+            </Frame.Background>
+            <CollectionView ItemsSource="{Binding List_Of_Added_Goods}"
+                            EmptyView="Nie wybrałeś zadnych przedmiotów"
+                            SelectedItem="{Binding Selected_Item}"
+                            MaximumHeightRequest="350"
+                            HeightRequest="350"
+                            >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Goods" >
+                                
+                                        
+                        <Grid Padding="10">
+                            <Frame 
+                               BorderColor="Transparent">
+                                <Frame.Background>
+                                    <LinearGradientBrush EndPoint="1,2">
+                                        <GradientStop Color="#5bc3ff" Offset="0.1"/>
+                                        <GradientStop Color="#0097e6" Offset="1.2"/>
+                                    </LinearGradientBrush>
+                                </Frame.Background>
+                                <Frame.GestureRecognizers>
+                                            <SwipeGestureRecognizer Direction="Right"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:InvoiceViewModel}}, Path=RemoveGoodFromListCommand}"
+                                        CommandParameter="{Binding .}"/>
+                                            </Frame.GestureRecognizers>
+                                            <Grid Padding="0" ColumnDefinitions="Auto,*, Auto">
+                                    <!--<Image Aspect="AspectFill" Source="{Binding Image}"
+                                       WidthRequest="125"
+                                       HeightRequest="125"/>-->
+                                    <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Padding="10">
+                                        <Label Text="{Binding Product_Name, StringFormat='Nazwa: {0}'}" />
+                                        <Label Text="{Binding Product_Code, StringFormat='Kod: {0}'}" />
+                                        <Label Text="{Binding Price_Netto, StringFormat='Cena netto: {0}'}" />
+                                        <Label Text="{Binding VAT_String, StringFormat='Vat: {0}'}" />
+                                        <Label Text="{Binding Price_Brutto, StringFormat='Cena brutto: {0}'}" />
+                                        <Label Text="{Binding Quantity, StringFormat='Ilosc: {0}'}" />
+                                        <Label Text="{Binding Sum, StringFormat='Suma: {0}'}" />
+                                                  
+                                    </VerticalStackLayout>
+                                    <Label Grid.Column="2" Text=""/>
+
+                                </Grid>
+                            </Frame>
+                        </Grid>
+                                
+                            </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+
+        </Frame>
+            <!--<Grid ColumnDefinitions="*,*" Grid.Row="1">
+
+                <Button Text="Usuń towar" 
+                        
+                        Margin="10,0,0,10"
+                        Command="{Binding RemoveGoodFromListCommand}"
+                        Grid.Column="0"/>
+                <Button Text="Edytuj towar" 
+                        
+                        Margin="10,0,10,10"
+                        Command="{Binding EditGoodToListCommand}"
+                        Grid.Column="1"/>
+            </Grid>-->
+        </Grid>
+            <Grid ColumnDefinitions="Auto,Auto,*,auto" Grid.Row="3">
+                <Label Text="Ilość:"
+                       TextColor="White"
+                       FontAttributes="Bold"
+                       VerticalOptions="Center"
+                       Grid.Column="0"
+                       Margin="10,0,0,0"/>
+                <Entry Text="{Binding Quantity2}"                  
+                       PlaceholderColor="DarkGray"
+                       BackgroundColor="White"     
+                       Margin="10"
+                       MinimumWidthRequest="100"
+                       Grid.Column="1"/>
+                <Button Text="Wystaw" 
+                        Grid.Column="2"
+                        Margin="10"
+                        Command="{Binding SubmitInvoiceCommand}"                       
+                        VerticalOptions="Center"/>
+
+            </Grid>
+            <Grid Grid.Row="4"
+              RowDefinitions="auto,auto">
+            
+            <Frame BorderColor="Transparent"
+               Margin="10"
+               Grid.Row="1">
+
+                
+                <Frame.Background>
+                    <LinearGradientBrush EndPoint="1,1">
+                        <GradientStop Color="#FF3FA3AF"
+                                  Offset="0.0"/>
+                        <GradientStop Color="#FF233067"
+                                  Offset="1.1"/>
+                    </LinearGradientBrush>
+                </Frame.Background>
+                <Grid RowDefinitions="auto,auto">
+                    <SearchBar x:Name="searchBar" 
+                               Grid.Row="1"     
+                               Margin="0,10,0,0"
+                               Text="{Binding SearchText}"                              
+                               BackgroundColor="White"
+                               
+                               Placeholder="Wyszukaj produkt"
+                               SearchCommand="{Binding SearchBarCommand}"                             
+                               SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
+                  />
+                    <CollectionView EmptyView="Trzeba stworzyc towar"
+                                    ItemsSource="{Binding Filtered_List}"
+                                    Grid.Row="0"
+                                    MaximumHeightRequest="400"
+                                >
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical"
+                                     HorizontalItemSpacing="5"
+                                     VerticalItemSpacing="5"
+                                     Span="{OnIdiom Phone=2, Default=3}"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Goods">
+                                <Frame BackgroundColor="LightBlue">
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer 
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:InvoiceViewModel}}, Path=AddGoodToListCommand}"
+                                                CommandParameter="{Binding .}"/>
+                                        </Frame.GestureRecognizers>
+                                    <VerticalStackLayout>
+                                        <Label Text="{Binding Product_Name, StringFormat='Nazwa: {0}'}" />
+                                        <Label Text="{Binding Product_Code, StringFormat='Kod: {0}'}" />
+                                        <Label Text="{Binding Price_Netto, StringFormat='Cena netto: {0}'}" />
+                                            
+                                        </VerticalStackLayout>
+                                        
+                                    </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Grid>
+            </Frame>
+        </Grid>
+
+    </Grid>
+
+    </ScrollView>
+   
 </ContentPage>

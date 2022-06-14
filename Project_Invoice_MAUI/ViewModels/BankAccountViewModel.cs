@@ -35,27 +35,6 @@ namespace Project_Invoice_MAUI.ViewModels
         private int _value;
         
 
-        //public string Value
-        //{
-        //    get
-        //    {
-        //        return _value.ToString();
-        //    }
-        //    set
-        //    {
-        //        try
-        //        {
-        //            _value = Convert.ToInt32(value);
-        //            OnPropertyChanged();
-        //        }
-        //        catch (Exception)
-        //        {
-        //            //MessageBox.Show("UwU watrość nie jest liczbą", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
-        //        }
-
-        //    }
-        //}
-
         public BankAccountViewModel()
         {
             CurrencyComboBox = new List<string>();

@@ -1,16 +1,13 @@
-﻿using Project_Invoice_MAUI.DbContexs;
+﻿using Project_Invoice_MAUI.DTOContex;
 using Project_Invoice_MAUI.Models;
 using SQLite;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Project_Invoice_MAUI.Services
 {
     public class KontrahentService
     {
+
+        // przydałoby się zrobić jedną instancje tego
         static SQLiteAsyncConnection db;
         static async Task Init()
         {
@@ -55,7 +52,7 @@ namespace Project_Invoice_MAUI.Services
         {
             await Init();
             var kontrahentDTOs = ToKontrahentDTO(kontrahent);
-            await db.DeleteAsync<CompanyData>(kontrahentDTOs.ID);
+            await db.DeleteAsync<KontrahentsDTO>(kontrahentDTOs.ID);           
         }
 
 
@@ -65,13 +62,29 @@ namespace Project_Invoice_MAUI.Services
             {
                 Account_Number = kontrahent.Account_Number,
                 BankAccount_Name = kontrahent.BankAccount_Name,
-                Company = kontrahent.Company,
+                Full_Name = kontrahent.Company.Full_Name,
+                NIP = kontrahent.Company.NIP,
+                REGON = kontrahent.Company.REGON,
+                House_Number = kontrahent.Company.House_Number,
+                Street = kontrahent.Company.Street,
+                ZIP_Code = kontrahent.Company.ZIP_Code,
+                Town = kontrahent.Company.Town,
             };
         }
 
         private static Kontrahent ToKontrahent(KontrahentsDTO dto)
         {
-            return new Kontrahent( dto.BankAccount_Name, dto.Account_Number, dto.Company);
+            var companydata = new CompanyData()
+            {
+                Full_Name = dto.Full_Name,
+                NIP = dto.NIP,
+                REGON = dto.REGON,
+                House_Number = dto.House_Number,
+                Street = dto.Street,
+                ZIP_Code = dto.ZIP_Code,
+                Town = dto.Town,
+            };
+            return new Kontrahent( dto.BankAccount_Name, dto.Account_Number, companydata);
             
         }
 
@@ -80,7 +93,7 @@ namespace Project_Invoice_MAUI.Services
             var kontrahentDTO = await db.Table<KontrahentsDTO>()
                 .Where(g => g.BankAccount_Name == kontrahent.BankAccount_Name)
                 .Where(g => g.Account_Number == kontrahent.Account_Number)
-                .Where(g => g.Company == kontrahent.Company)// idk czy to bedzie działać
+                //.Where(g => g.Company_ID == kontrahent.Company.CompanyID)// idk czy to bedzie działać
                 .Where(g => g.ID == kontrahent.ID)// idk czy to bedzie działać
                 .FirstOrDefaultAsync();
 

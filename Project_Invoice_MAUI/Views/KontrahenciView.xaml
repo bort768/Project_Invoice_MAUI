@@ -8,10 +8,12 @@
     <ContentPage.BindingContext>
         <viewModel:KonthrahentViewModel/>
     </ContentPage.BindingContext>
-    <StackLayout BackgroundColor="#353b48"
+    <Grid RowDefinitions="*,auto"
+          BackgroundColor="#353b48">
+    <ScrollView Grid.Row="0">
+            <StackLayout 
           >
-
-            <Frame Margin="10"
+                <Frame Margin="10"
                BorderColor="Transparent">
                 <Frame.Background>
                     <LinearGradientBrush EndPoint="1,2">
@@ -31,7 +33,7 @@
                        MaximumHeightRequest="50"
                        HorizontalOptions="Start"
                        Margin="10,5,0,0" 
-                       Placeholder="Tu wpisz nazwe produktu"
+                       Placeholder="Tu wpisz numer konta"
                        Background="white"/>
 
 
@@ -46,7 +48,7 @@
                        MaximumHeightRequest="50"
                        HorizontalOptions="Start"
                        Margin="10,5,0,0" 
-                       Placeholder="Tu wpisz kod produktu"
+                       Placeholder="Tu wpisz nazwe banku"
                        Background="white"/>
 
                     <Label Text="Nazwa kontrahenta" 
@@ -60,7 +62,7 @@
                        MaximumHeightRequest="50"
                        HorizontalOptions="Start"
                        Margin="10,5,0,0" 
-                       Placeholder="opis"
+                       Placeholder="Nazwe kontrahenta"
                        Background="white"/>
 
                     <Label Text="NIP" 
@@ -92,7 +94,7 @@
                         HorizontalOptions="Start"
                         Margin="10,5,0,0"
                         
-                        Placeholder="Tu wpisz nazwe firmy"
+                        Placeholder="Tu wpisz REGON"
                         Background="white"
                         />
 
@@ -119,12 +121,13 @@
                        TextColor="White"
                        Margin="10,5,0,0"/>
                     <Entry x:Name="Ulica"
-                       Text="{Binding Street}"
-                       MaximumWidthRequest="260"
-                       MinimumWidthRequest="160"
-                       HorizontalOptions="Start"
-                       Margin="10,5,0,0"
-                       Background="White"/>
+                           Text="{Binding Street}"
+                           MaximumWidthRequest="260"
+                           MinimumWidthRequest="160"
+                           HorizontalOptions="Start"
+                               
+                           Margin="10,5,0,0"
+                           Background="White"/>
 
                     <Label Text="Numer Lokalu" 
                        TextColor="White"
@@ -166,20 +169,27 @@
             
 
             </Frame>
-            <HorizontalStackLayout Margin="10">
-                <Button Text="Add"
-                    Command="{Binding AddGoodsCommand}"
-                    IsVisible="{Binding Is_Not_Selected}"
-                    Margin="0,0,10,0"/>
-                <Button Text="Delete"
-                    Command="{Binding DeleteGoodsCommand}"
-                    IsVisible="{Binding Is_Selected}"
-                    Margin="0,0,10,0"/>
-                <Button Text="Update"
-                    Command="{Binding UpdateGoodsCommand}"
-                    IsVisible="{Binding Is_Selected}"
-                    Margin="0,0,10,0"/>
-            </HorizontalStackLayout>
+
 
         </StackLayout>
+    </ScrollView>
+        <HorizontalStackLayout Margin="10"
+                               Grid.Row="1">
+            <Button Text="Add"
+                    Command="{Binding AddKontrahentCommand}"
+                    IsVisible="{Binding Is_Not_Selected}"
+                    Margin="0,0,10,0"/>
+            <Button Text="Delete"
+                    Command="{Binding DeleteKontrahentCommand}"
+                    IsVisible="{Binding Is_Selected}"
+                    Margin="0,0,10,0"/>
+            <Button Text="Update"
+                    Command="{Binding UpdateKontrahentCommand}"
+                    IsVisible="{Binding Is_Selected}"
+                    Margin="0,0,10,0"/>
+            <Button Text="Back"
+                    Command="{Binding GoBackCommand}"
+                    Margin="0,0,10,0"/>
+        </HorizontalStackLayout>
+    </Grid>
 </ContentPage>

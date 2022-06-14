@@ -1,4 +1,5 @@
-﻿using Project_Invoice_MAUI.DbContexs;
+﻿
+using Project_Invoice_MAUI.DTOContex;
 using Project_Invoice_MAUI.Models;
 using SQLite;
 
@@ -14,7 +15,7 @@ namespace Project_Invoice_MAUI.Services
             if (db != null)
                 return;
 
-            var databasePath = Path.Combine(FileSystem.AppDataDirectory, "CompanyData.db");
+            var databasePath = Path.Combine(FileSystem.AppDataDirectory, "CompanyDataBase.db");
 
             db = new SQLiteAsyncConnection(databasePath);
 
@@ -52,7 +53,7 @@ namespace Project_Invoice_MAUI.Services
         {
             await Init();
             var goodsDTOs = ToGoodsDTO(goods);
-            await db.DeleteAsync<CompanyData>(goodsDTOs.Product_Code);
+            await db.DeleteAsync<GoodsDTO>(goodsDTOs.Product_Code);
         }
 
 

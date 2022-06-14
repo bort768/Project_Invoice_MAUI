@@ -24,7 +24,7 @@ namespace Project_Invoice_MAUI.ViewModels
         [ICommand]
         public async void GoToKontrahents()
         {
-            await Shell.Current.GoToAsync(nameof(KontrahenciView));
+            await Shell.Current.GoToAsync(nameof(KontrahentCollectionView));
         }
 
         [ICommand]

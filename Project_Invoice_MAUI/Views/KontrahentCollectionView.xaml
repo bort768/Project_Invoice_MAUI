@@ -4,9 +4,10 @@
              x:Class="Project_Invoice_MAUI.Views.KontrahentCollectionView"
              xmlns:viewmodel="clr-namespace:Project_Invoice_MAUI.ViewModels"
              xmlns:model="clr-namespace:Project_Invoice_MAUI.Models"
+             x:DataType="viewmodel:KontrahentCollectionViewModel"
              Title="KontrahentCollectionView">
     <ContentPage.BindingContext>
-        <viewmodel:AddGoodsCollectionViewModel/>
+        <viewmodel:KontrahentCollectionViewModel/>
     </ContentPage.BindingContext>
     <Grid
         ColumnDefinitions="*,*"
@@ -18,7 +19,7 @@
         <!--ItemsSource="{Binding List_of_goods}"-->
         <CollectionView
            Grid.ColumnSpan="2"
-           ItemsSource="{Binding List_of_goods}"
+           ItemsSource="{Binding List_of_Kontrahents}"
             BackgroundColor="#272537">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:Kontrahent" >
@@ -33,7 +34,7 @@
                             </Frame.Background>
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AddGoodsCollectionViewModel}}, Path=GoToDetailsEditCommand}"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:KontrahentCollectionViewModel}}, Path=GoToDetailsEditCommand}"
                                         CommandParameter="{Binding .}"/>
                             </Frame.GestureRecognizers>
                             <Grid Padding="0" ColumnDefinitions="Auto,*, Auto">
@@ -43,21 +44,10 @@
                                 <VerticalStackLayout
                                     Grid.Column="1"
                                     Padding="10">
-                                    <Label Text="{Binding Product_Name, StringFormat='Nazwa: {0}'}" />
-                                    <Label Text="{Binding Description, StringFormat='Opis: {0}'}" />
-                                    <!--<Label>
-                                        <Label.Text>
-                                            <MultiBinding StringFormat="Cenna Brutto {0} {1}">
-                                                <Binding Path="Price_Netto"/>
-                                                <Binding Path="Curreny"/>
-                                            </MultiBinding>
-                                        </Label.Text>
-                                    </Label>-->
-                                    <!--<Label Text="{Binding Price_Netto, StringFormat='Cenna Brutto: {0} zł'}"  />
-                                    <Label Text="{Binding Price_Brutto, StringFormat='Cenna Brutto: {0} zł'}" />-->
-
+                                    <Label Text="{Binding Company.Full_Name, StringFormat='Nazwa: {0}'}" />
+                                    <Label Text="{Binding Company.NIP, StringFormat='NIP: {0}'}" />
                                 </VerticalStackLayout>
-                                <Label Grid.Column="2" Text="Kliknij dwa razy po Wiecej inforamcji"/>
+                                <Label Grid.Column="2" Text="Kliknij mnie"/>
 
                             </Grid>
                         </Frame>
@@ -66,18 +56,20 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <Button Text="Get Goods" 
-                Command="{Binding GetGoodsCommand}"
+        <Button Text="Załaduj kontrahentów" 
+                Command="{Binding GetKontrahentsCommand}"
                 IsEnabled="{Binding IsNotbusy}"
                 Grid.Row="1"
                 Grid.Column="0"            
                 Margin="8"/>
 
-        <Button Text="Add Goods" 
-                Command="{Binding GoToAddGoodsCommand}"
+        <Button Text="Dodaj kontrahenta" 
+                Command="{Binding GoToAddCommand}"
                 Grid.Row="1"
                 Grid.Column="1"            
                 Margin="8"/>
+        
+        
 
 
         <ActivityIndicator IsVisible="{Binding IsBusy}"

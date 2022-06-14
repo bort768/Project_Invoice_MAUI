@@ -1,7 +1,7 @@
 ﻿using Project_Invoice_MAUI.Models;
 using Project_Invoice_MAUI.Services;
 using Project_Invoice_MAUI.Singleton;
-
+using Project_Invoice_MAUI.Views;
 
 namespace Project_Invoice_MAUI.ViewModels
 {
@@ -104,6 +104,13 @@ namespace Project_Invoice_MAUI.ViewModels
         }
 
         #region Commands
+
+        [ICommand]
+        async Task GoBack()
+        {
+            await Shell.Current.GoToAsync($"{nameof(KontrahentCollectionView)}");
+        }
+
 
         [ICommand]
         public async void DeleteKontrahent()

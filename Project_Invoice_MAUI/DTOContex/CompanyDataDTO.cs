@@ -1,7 +1,7 @@
 ﻿using SQLite;
 using System.ComponentModel.DataAnnotations;
 
-namespace Project_Invoice_MAUI.DTOs
+namespace Project_Invoice_MAUI.DTOContex
 {
     public class CompanyDataDTO
     {
@@ -11,6 +11,8 @@ namespace Project_Invoice_MAUI.DTOs
         public string Full_Name { get; set; }
         public string NIP { get; set; }
         public string REGON { get; set; }
+
+        //można dać w inną klase
         public string Street { get; set; }
         public string House_Number { get; set; }
         public string ZIP_Code { get; set; }

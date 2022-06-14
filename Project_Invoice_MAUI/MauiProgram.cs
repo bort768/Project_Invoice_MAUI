@@ -25,6 +25,10 @@ public static class MauiProgram
         builder.Services.AddSingleton<InvoiceViewModel>();
         builder.Services.AddSingleton<KonthrahentViewModel>();
         builder.Services.AddSingleton<AddGoodsCollectionViewModel>();
+        builder.Services.AddSingleton<KontrahentCollectionViewModel>();
+
+        builder.Services.AddTransient<KonthrahentViewModel>();
+        builder.Services.AddTransient<KontrahenciView>();
 
         builder.Services.AddTransient<AddGoodsViewModel>();
         builder.Services.AddTransient<AddGoodsView>();

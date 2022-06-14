@@ -1,46 +1,16 @@
-﻿using Project_Invoice_MAUI.Models;
+﻿using Newtonsoft.Json;
+using Project_Invoice_MAUI.Models;
 using Project_Invoice_MAUI.SaveFileHelper;
+using Project_Invoice_MAUI.SavePathHelpers;
+using Project_Invoice_MAUI.Services;
 using Project_Invoice_MAUI.Singleton;
 //using System.Collections.ObjectModel;
 
 namespace Project_Invoice_MAUI.ViewModels
-
-/* Niescalona zmiana z projektu „Project_Invoice_MAUI (net6.0-windows10.0.19041.0)”
-Przed:
-{
-    
-    public partial class InvoiceViewModel : BaseViewModel
-Po:
-{
-
-    public partial class InvoiceViewModel : BaseViewModel
-*/
-
-/* Niescalona zmiana z projektu „Project_Invoice_MAUI (net6.0-maccatalyst)”
-Przed:
-{
-    
-    public partial class InvoiceViewModel : BaseViewModel
-Po:
-{
-
-    public partial class InvoiceViewModel : BaseViewModel
-*/
-
-/* Niescalona zmiana z projektu „Project_Invoice_MAUI (net6.0-ios)”
-Przed:
-{
-    
-    public partial class InvoiceViewModel : BaseViewModel
-Po:
-{
-
-    public partial class InvoiceViewModel : BaseViewModel
-*/
-{
-
+{ 
     public partial class InvoiceViewModel : BaseViewModel
     {
+        #region zmienne
         Firma firma = Firma.GetInstance();
 
         ISaveToFile MetodOfSave;
@@ -51,8 +21,9 @@ Po:
         //public CommandBase EditGoodToListCommand { get; set; }
 
         public ObservableCollection<Goods> List_Of_Added_Goods { get; set; } = new();
-        public ObservableCollection<Kontrahent> List_Of_Kontrahents { get; set; }
-        public ObservableCollection<Goods> Add_Remove_Goods_List { get; set; }
+        public ObservableCollection<Kontrahent> List_Of_Kontrahents { get; set; } = new();
+        public ObservableCollection<Goods> Add_Remove_Goods_List { get; set; } = new();
+        public ObservableCollection<Goods> Filtered_List { get; set; } = new();
 
         [ObservableProperty]
         private Kontrahent _selected_Kontrahent;
@@ -107,6 +78,10 @@ Po:
             }
         }
 
+        [ObservableProperty]
+        private int _quantity2 = 1;
+
+
         private int _quantity = 1;
         public string Quantity
         {
@@ -133,6 +108,15 @@ Po:
 
         [ObservableProperty]
         private Goods _selected_Goods;
+
+        [ObservableProperty]
+        private string _searchText;
+
+        partial void OnSearchTextChanged(string value)
+        {
+            SearchBar(value);
+        }
+
 
 
         public Kontrahent kontrahent { get; set; }
@@ -163,74 +147,78 @@ Po:
 
 
 
-
+        #endregion
 
         public InvoiceViewModel()
         {
             if (firma.CompanyData != null)
             {
                 Town = firma.CompanyData.Town;
-            }
-            else
-            {
-                //MessageBox.Show("Dane o firmie nie zostały załadowane", "Bład", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-            Wypisanie_Invoice_Format();
-
-            if (firma.CompanyData != null)
-            {
                 companyData = firma.CompanyData;
             }
 
-            List_Of_Added_Goods = new();
+            GetCompanyData();
 
-            //dodawanie i towrzenie listy kontrahentów do comobobox
-            List_Of_Kontrahents = new();
-            foreach (var kontrahent in firma.kontrahents!)
-            {
-                List_Of_Kontrahents.Add(kontrahent);
-            }
 
-            Add_Remove_Goods_List = new();
 
             if (firma.goods != null)
             {
                 //Add_Remove_Goods_List = firma.goods;
                 foreach (var goods in firma.goods)
                 {
-                    Add_Remove_Goods_List.Add(goods);
+                    Filtered_List.Add(goods);
                 }
             }
+            else
+            {
+                //Task load = GetGoodsAsync();
+            }
 
+            //foreach (var goods in firma.goods)
+            //{
+            //    Filtered_List.Add(goods);
+            //}
 
+            if (firma.kontrahents == null)
+            {
+                //Task loadKontrahents = GetKontrahents();
+            }
 
+            Wypisanie_Invoice_Format();
 
+            //dodawanie i towrzenie listy kontrahentów do comobobox
+
+            foreach (var kontrahent in firma.kontrahents!)
+            {
+                List_Of_Kontrahents.Add(kontrahent);
+            }
+
+            //Add_Remove_Goods_List = new();
 
         }
 
 
         #region Commands
         [ICommand]
-        public void AddGoodToListCommand(Goods goods)
+        public void AddGoodToList(Goods goods)
         {
             Add_Goods_To_List(goods);
         }
 
         [ICommand]
-        public void EditGoodToListCommand(Goods goods)
+        public void EditGoodToList(Goods goods)
         {
             Edit_Goods_To_List(goods);
         } // zmien tu trochę
 
         [ICommand]
-        public void RemoveGoodFromListCommand(Goods goods)
+        public void RemoveGoodFromList(Goods goods)
         {
-            DeleteGoods(goods);
+            List_Of_Added_Goods.Remove(goods);
         }
 
         [ICommand]
-        public void SubmitInvoiceCommand()
+        public void SubmitInvoice()
         {
             MetodOfSave = new SaveAsPdf(firma.DocumentNumbering, Selected_Kontrahent, firma.CompanyData!, firma.BossData, firma.BankAccount,
                 List_Of_Added_Goods.ToList(), DataWystawienia, Invoice_Format, Invoice_Number);
@@ -239,17 +227,31 @@ Po:
             Wypisanie_Invoice_Format();
         }
 
+        [ICommand]
+        void SearchBar(string text)
+        {
+            List<Goods> filteredList = firma.goods.Where(r => r.Product_Name.ToLower().Contains(text.ToLower())).ToList();
+            firma.goods.Count();
+            //czyszczenie list ponieważ robią się duplikaty
+            Filtered_List.Clear();
+            filteredList.ForEach(goods => Filtered_List.Add(goods));
+            //Add_Remove_Goods_List = Filtered_List;
+                //kontrahents.ForEach(kontrahent => List_of_Kontrahents.Add(kontrahent));
+
+        }
+
+        [ICommand]
+        void SelectObject(Goods goods)
+        {
+            var selectedGoods = List_Of_Added_Goods.Where(x => x.Equals(goods));
+        }
+
         #endregion
 
 
 
         #region Metody
-        private void DeleteGoods(Goods goods_To_Remove)
-        {
-            //MessageBox.Show($"{Product_Code.ToString}", "Testowo", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            List_Of_Added_Goods.Remove(goods_To_Remove);
-        }
 
         private void Edit_Goods_To_List(Goods goods_To_Edit)
         {
@@ -264,18 +266,9 @@ Po:
 
         private void Add_Goods_To_List(Goods goods_To_Add)
         {
-
-            if (Selected_Goods != null)
-            {
-                Selected_Goods.Quantity = _quantity;
-                Selected_Goods.Sum = (_quantity * Selected_Goods.Price_Brutto);
-                List_Of_Added_Goods.Add(goods_To_Add);
-            }
-            else
-            {
-                //MessageBox.Show($"Nie wybrano towaru lub usługi", "Błąd", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-
+           goods_To_Add.Quantity= _quantity2;
+           goods_To_Add.Sum = (_quantity2 * goods_To_Add.Price_Brutto);
+           List_Of_Added_Goods.Add(goods_To_Add);
         }
 
 
@@ -312,6 +305,102 @@ Po:
             }
 
         }
+
+
+        public async void LoadData()
+        {
+            await GetGoodsAsync();
+            GetCompanyData();
+            await GetKontrahents();
+
+        }
+
+        void GetCompanyData()
+        {
+            var stream = FileSystem.Current.AppDataDirectory + JsonFilesPath.COMPANY_DATA;
+            if (File.Exists(stream))
+            {
+                firma.CompanyData = JsonConvert.DeserializeObject<CompanyData>(File.ReadAllText(stream));
+                Town = firma.CompanyData.Town;
+                companyData = firma.CompanyData;
+            }
+
+            var streamDN = FileSystem.Current.AppDataDirectory + JsonFilesPath.DOCUMENT_NUMBERING;
+            if (File.Exists(streamDN))
+            {
+                firma.DocumentNumbering = JsonConvert.DeserializeObject<DocumentNumbering>(File.ReadAllText(streamDN));
+            }
+
+            var streamBA = FileSystem.Current.AppDataDirectory + JsonFilesPath.BANK_ACCOUNT;
+            if (File.Exists(streamBA))
+            {
+                firma.BankAccount = JsonConvert.DeserializeObject<BankAccount>(File.ReadAllText(streamBA));
+            }
+        }
+
+        async Task GetGoodsAsync()
+        {
+            if (IsBusy)
+                return;
+
+            try
+            {
+                IsBusy = true;
+                var Goods = await GoodsService.GetGoods();
+
+                if (firma.goods.Count != 0)
+                    firma.goods.Clear();
+
+                //no nie jest to optymalne
+                firma.goods = Goods;
+
+                foreach (var goods in firma.goods)
+                {
+                    Filtered_List.Add(goods);
+                }
+
+                // wywala bład// juz nie
+                //Goods.ForEach(Goods => List_of_good.Add(Goods));
+
+
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error!", ex.Message, "OK");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+
+        async Task GetKontrahents()
+        {
+
+            if (IsBusy)
+                return;
+
+            try
+            {
+                IsBusy = true;
+                var kontrahents = await KontrahentService.GetKontrahents();
+
+                //AddRadomData();
+                //no nie jest to optymalne
+                firma.kontrahents = kontrahents;
+
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error!", ex.Message, "OK");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
         #endregion
     }
 }

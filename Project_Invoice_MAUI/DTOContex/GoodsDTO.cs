@@ -1,11 +1,7 @@
 ﻿using SQLite;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Project_Invoice_MAUI.DbContexs
+
+namespace Project_Invoice_MAUI.DTOContex
 {
     public class GoodsDTO
     {

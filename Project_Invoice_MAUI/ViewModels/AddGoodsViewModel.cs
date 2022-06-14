@@ -176,21 +176,6 @@ namespace Project_Invoice_MAUI.ViewModels
                 _is_Selected = false;
             }
 
-
-
-            //if (firma.goods != null)
-            //{
-            //    foreach (var Goods_Combobox in firma.goods)
-            //    {
-            //        LastVisetedGoods.Add(Goods_Combobox.ToString());
-            //    }
-            //}
-            //else
-            //{
-            //    firma.goods = new();
-
-            //}
-
         }
 
 
@@ -204,12 +189,13 @@ namespace Project_Invoice_MAUI.ViewModels
 
                 await GoodsService.DeleteGoods(good);
                 await Shell.Current.DisplayAlert("Towar usunięty", "Towar został usunięty", "ok");
+                await Shell.Current.GoToAsync("..", true);
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Błąd", ex.Message, "ok");
-                
+                await Shell.Current.DisplayAlert("Błąd", ex.Message, "ok");               
             }
+
             
         }
 
@@ -218,15 +204,16 @@ namespace Project_Invoice_MAUI.ViewModels
         {
             try
             {
+                IsBusy = true;
                 var good = new Goods(_product_Name, _product_Code, _description, _price_Netto, _price_Brutto, _VAT, _Vat_Selected_Item);
 
                 await GoodsService.UpdateGoods(good);
-                await Shell.Current.DisplayAlert("Towar usunięty", "Towar został usunięty", "ok");
+                await Shell.Current.DisplayAlert("Towar", "Towar został zaktualizowany", "ok");
+                IsBusy = false;
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Błąd", ex.Message, "ok");
-                throw;
+                await Shell.Current.DisplayAlert("Błąd", ex.Message, "ok");               
             }
 
         }
@@ -237,7 +224,7 @@ namespace Project_Invoice_MAUI.ViewModels
             //submit goods
             var containsConflict = firma.goods.Where(p => p.Product_Code == _product_Code);
 
-            if (containsConflict.Any())
+            if (containsConflict.Count() != 0)
             {
                 await Shell.Current.DisplayAlert("Błąd", "towar z tym kodem jest już w bazie", "ok");
             }
@@ -246,6 +233,7 @@ namespace Project_Invoice_MAUI.ViewModels
                 await GoodsService.AddGoods(new Goods(_product_Name, _product_Code, _description, _price_Netto, _price_Brutto, _VAT, _Vat_Selected_Item));
                 firma.goods.Add(new Goods(_product_Name, _product_Code, _description, _price_Netto, _price_Brutto, _VAT, _Vat_Selected_Item));
                 await ToastSaveSucces();
+                
             }
 
 

@@ -93,6 +93,14 @@ namespace Project_Invoice_MAUI.ViewModels
                 {
                     firma.CompanyData = JsonConvert.DeserializeObject<CompanyData>(File.ReadAllText(stream));
                 }
+
+                var streamDN = FileSystem.Current.AppDataDirectory + JsonFilesPath.DOCUMENT_NUMBERING;
+                if (File.Exists(streamDN))
+                {
+                    firma.DocumentNumbering = JsonConvert.DeserializeObject<DocumentNumbering>(File.ReadAllText(streamDN));
+                    Broken_By_Mounth = firma.DocumentNumbering.Broken_By_Mounth;
+                    Broken_By_Year = firma.DocumentNumbering.Broken_By_Year;
+                }
                 //else
                 //{
                 //    firma.CompanyData = new CompanyData
@@ -111,19 +119,13 @@ namespace Project_Invoice_MAUI.ViewModels
                 //}
 
                 //desrialize document numbering
-                var streamDN = FileSystem.Current.AppDataDirectory + JsonFilesPath.DOCUMENT_NUMBERING;
-                if (File.Exists(streamDN))
-                {
-                    firma.DocumentNumbering = JsonConvert.DeserializeObject<DocumentNumbering>(File.ReadAllText(streamDN));
-                    Broken_By_Mounth = firma.DocumentNumbering.Broken_By_Mounth;
-                    Broken_By_Year = firma.DocumentNumbering.Broken_By_Year;
-                }
-                
+
+
 
                 //firma.CompanyData = JsonConvert.DeserializeObject<CompanyData>(output);
-            
-                
-                
+
+
+
 
 
             }
@@ -179,7 +181,7 @@ namespace Project_Invoice_MAUI.ViewModels
 
 
                 var streamDN = FileSystem.Current.AppDataDirectory + JsonFilesPath.DOCUMENT_NUMBERING;
-                string outputDN = JsonConvert.SerializeObject(firma.CompanyData, Formatting.Indented);
+                string outputDN = JsonConvert.SerializeObject(firma.DocumentNumbering, Formatting.Indented);
                 File.WriteAllText(streamDN, outputDN);
 
                

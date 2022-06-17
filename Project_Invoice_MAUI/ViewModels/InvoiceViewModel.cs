@@ -157,7 +157,7 @@ namespace Project_Invoice_MAUI.ViewModels
                 companyData = firma.CompanyData;
             }
 
-            GetCompanyData();
+            LoadData();
 
 
 
@@ -353,6 +353,7 @@ namespace Project_Invoice_MAUI.ViewModels
 
                 //no nie jest to optymalne
                 firma.goods = Goods;
+                Filtered_List.Clear();
 
                 foreach (var goods in firma.goods)
                 {
@@ -389,6 +390,8 @@ namespace Project_Invoice_MAUI.ViewModels
                 //AddRadomData();
                 //no nie jest to optymalne
                 firma.kontrahents = kontrahents;
+                List_Of_Kontrahents.Clear();
+                kontrahents.ForEach(k => List_Of_Kontrahents.Add(k));
 
             }
             catch (Exception ex)

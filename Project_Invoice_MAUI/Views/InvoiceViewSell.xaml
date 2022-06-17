@@ -282,8 +282,14 @@
                 </Grid>
             </Frame>
         </Grid>
+            <ActivityIndicator IsVisible="{Binding IsBusy}"
+                               IsRunning="{Binding IsBusy}"
+                               HorizontalOptions="FillAndExpand"
+                               VerticalOptions="CenterAndExpand"
+                               Grid.RowSpan="5"
+                               />
 
-    </Grid>
+        </Grid>
 
     </ScrollView>
    
